@@ -77,11 +77,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         val errorStatusObserver = Observer<Boolean> { status ->
             if (status){
                 viewModel.errorStatus.value = false
-                showInsertLocalityDialog(
-                    applicationContext.getString(
-                        R.string.didnt_found_city
-                    )
-                )
+                Toast.makeText(this, getString(R.string.didnt_found_city), Toast.LENGTH_LONG).show()
             }
         }
         viewModel.errorStatus.observe(this,errorStatusObserver)
@@ -108,6 +104,9 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         super.onResume()
         applyStickyHeaderPreference()
         oppoRenderer?.onActivityResume()
+        if (hasLocationPermission()) {
+            getDeviceLocation()
+        }
     }
 
     override fun onPause() {
@@ -178,12 +177,6 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         val savedLocation = prefs.getString("last_location", null)
         if (savedLocation != null) {
             restoreFromSavedPrefs(prefs, savedLocation)
-        } else {
-            showInsertLocalityDialog(
-                applicationContext.getString(
-                    R.string.no_permission_dialog_message
-                )
-            )
         }
     }
 
@@ -224,41 +217,10 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         if (hasLocationPermission()) {
             fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                if (location == null){
-                    val prefs = getSharedPreferences("weather_prefs", MODE_PRIVATE)
-                    val savedLocation = prefs.getString("last_location", null)
-                    if (savedLocation != null) {
-                        restoreFromSavedPrefs(prefs, savedLocation)
-                    } else {
-                        showInsertLocalityDialog(
-                            applicationContext.getString(
-                                R.string.insert_location_dialog_description
-                            )
-                        )
-                    }
+                if (location == null) {
+                    requestFreshLocation(fusedLocationProviderClient)
                 } else {
-                    val lat = location.latitude
-                    val lon = location.longitude
-                    val locality = Geocoder(this).getFromLocation(
-                        lat,
-                        lon,
-                        1
-                    )?.firstOrNull()?.locality
-                    if (locality == null) {
-                        val prefs = getSharedPreferences("weather_prefs", MODE_PRIVATE)
-                        val savedLocation = prefs.getString("last_location", null)
-                        if (savedLocation != null) {
-                            restoreFromSavedPrefs(prefs, savedLocation)
-                        } else {
-                            showInsertLocalityDialog(
-                                applicationContext.getString(
-                                    R.string.insert_location_dialog_description
-                                )
-                            )
-                        }
-                    } else {
-                        viewModel.updateDeviceLocationWithCoords(locality, lat, lon)
-                    }
+                    resolveAndUpdateLocation(location.latitude, location.longitude)
                 }
             }
         } else {
@@ -270,6 +232,39 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         }
     }
 
+    @SuppressLint("MissingPermission")
+    private fun requestFreshLocation(client: com.google.android.gms.location.FusedLocationProviderClient) {
+        val request = com.google.android.gms.location.LocationRequest.Builder(
+            com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY, 5000
+        ).setMaxUpdates(1).build()
+        client.requestLocationUpdates(request, object : com.google.android.gms.location.LocationCallback() {
+            override fun onLocationResult(result: com.google.android.gms.location.LocationResult) {
+                client.removeLocationUpdates(this)
+                val loc = result.lastLocation
+                if (loc != null) {
+                    resolveAndUpdateLocation(loc.latitude, loc.longitude)
+                } else {
+                    val prefs = getSharedPreferences("weather_prefs", MODE_PRIVATE)
+                    val savedLocation = prefs.getString("last_location", null)
+                    if (savedLocation != null) {
+                        restoreFromSavedPrefs(prefs, savedLocation)
+                    }
+                }
+            }
+        }, mainLooper)
+    }
+
+    private fun resolveAndUpdateLocation(lat: Double, lon: Double) {
+        val address = try {
+            Geocoder(this).getFromLocation(lat, lon, 1)?.firstOrNull()
+        } catch (_: Exception) { null }
+        val name = address?.locality
+            ?: address?.subAdminArea
+            ?: address?.adminArea
+            ?: String.format("%.2f, %.2f", lat, lon)
+        viewModel.updateDeviceLocationWithCoords(name, lat, lon)
+    }
+
     private fun restoreFromSavedPrefs(prefs: android.content.SharedPreferences, savedLocation: String) {
         val savedLat = prefs.getFloat("last_lat", 0f).toDouble()
         val savedLon = prefs.getFloat("last_lon", 0f).toDouble()
@@ -278,21 +273,6 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         } else {
             viewModel.updateDeviceLocation(savedLocation)
         }
-    }
-
-    private fun showInsertLocalityDialog(
-        dialogMessage: String
-    ) {
-        val dialog = InsertLocationDialog(
-            dialogMessage,
-            btnSubmitClickListener = { locality ->
-                viewModel.updateDeviceLocation(locality)
-            },
-            citySearchProvider = { query ->
-                viewModel.getGeocodingSuggestions(query)
-            }
-        )
-        dialog.show(supportFragmentManager,"insertLocationDialog")
     }
 
     private fun setUpClickListeners() {
