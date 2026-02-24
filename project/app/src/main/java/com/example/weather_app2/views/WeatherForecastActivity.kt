@@ -32,6 +32,8 @@ import com.example.weather_app2.webservices.entities.currentweatherdata.CurrentW
 import com.example.weather_app2.webservices.entities.weatherforecastdata.WeatherForecastDataResponse
 import com.google.android.gms.location.LocationServices
 import com.vmadalin.easypermissions.EasyPermissions
+import com.example.weather_app2.utils.AdManager
+import com.google.android.gms.ads.AdView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*
@@ -45,6 +47,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
     private var headerCollapseDistance = 0f
     private val lottieEffectManager = StickyHeaderEffectManager()
     private var oppoRenderer: com.example.weather_app2.engine.WeatherEffectsRenderer? = null
+    private var bannerAdView: AdView? = null
     private var currentWeatherTag: String = ""
     private var initialLocationDone = false
 
@@ -108,13 +111,10 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         stickyCards.add(binding.adCard)
 
         binding.adContainer.post {
-            val cardWidth = binding.adCard.width
-            val headerHeight = binding.tvAdHeader.height
-            val dividerHeight = (0.5f * resources.displayMetrics.density).toInt()
-            val squareSize = cardWidth - headerHeight - dividerHeight
-            binding.adContainer.layoutParams = binding.adContainer.layoutParams.apply {
-                height = squareSize.coerceAtLeast((200 * resources.displayMetrics.density).toInt())
-            }
+            bannerAdView = AdManager.loadBannerAd(
+                context = this,
+                container = binding.adContainer
+            )
         }
 
         binding.nsvWeatherDetails.post {
@@ -134,6 +134,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         super.onResume()
         applyStickyHeaderPreference()
         oppoRenderer?.onActivityResume()
+        AdManager.resumeAd(bannerAdView)
         if (initialLocationDone && isMyLocationMode() && hasLocationPermission()) {
             getDeviceLocation()
         }
@@ -142,11 +143,14 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
     override fun onPause() {
         super.onPause()
         oppoRenderer?.onActivityPause()
+        AdManager.pauseAd(bannerAdView)
     }
 
     override fun onDestroy() {
         lottieEffectManager.cleanup()
         oppoRenderer?.onActivityDestroy()
+        AdManager.destroyAd(bannerAdView)
+        bannerAdView = null
         super.onDestroy()
     }
 

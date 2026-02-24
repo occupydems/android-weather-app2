@@ -19,5 +19,6 @@ class WeatherApplication : Application() {
             return
         }
         super.onCreate()
+        com.example.weather_app2.utils.AdManager.initialize(this)
     }
 }

@@ -235,8 +235,8 @@
                 <FrameLayout
                     android:id="@+id/adContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:minHeight="0dp" />
+                    android:layout_height="wrap_content"
+                    android:minHeight="50dp" />
 
             </com.example.weather_app2.views.StickyHeaderCardLayout>
 
