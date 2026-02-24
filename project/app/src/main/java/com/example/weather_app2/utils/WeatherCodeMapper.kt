@@ -78,8 +78,8 @@ object WeatherCodeMapper {
                 nowMinutes < sunriseMinutes + 150 -> "morning"
                 nowMinutes < sunsetMinutes - 180 -> "d"
                 nowMinutes < sunsetMinutes - 60 -> "afternoon"
-                nowMinutes < sunsetMinutes + 30 -> "sunset"
-                nowMinutes < sunsetMinutes + 90 -> "evening"
+                nowMinutes < sunsetMinutes -> "sunset"
+                nowMinutes < sunsetMinutes + 30 -> "evening"
                 else -> "n"
             }
         }

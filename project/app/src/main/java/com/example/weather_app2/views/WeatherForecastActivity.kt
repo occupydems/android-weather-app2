@@ -135,8 +135,14 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         applyStickyHeaderPreference()
         oppoRenderer?.onActivityResume()
         AdManager.resumeAd(bannerAdView)
-        if (initialLocationDone && isMyLocationMode() && hasLocationPermission()) {
-            getDeviceLocation()
+        if (initialLocationDone) {
+            if (isMyLocationMode() && hasLocationPermission()) {
+                getDeviceLocation()
+            } else {
+                lifecycleScope.launch {
+                    viewModel.downloadWeatherData()
+                }
+            }
         }
     }
 
@@ -334,11 +340,6 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
             val intent = Intent(this, CitySelectionActivity::class.java)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_up_in, R.anim.zoom_out_exit)
-        }
-        binding.btnRefresh.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.downloadWeatherData()
-            }
         }
     }
 

@@ -299,20 +299,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hourlyForecastContainer" />
 
-    <Button
-        android:id="@+id/btnRefresh"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/green"
-        android:text="@string/btnRefresh"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@color/white"
-        android:textSize="17sp"
-        app:backgroundTint="@color/green"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <View
         android:id="@+id/divider"
         android:layout_width="0dp"
