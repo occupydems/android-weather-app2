@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.weather_app2.views.StickyHeaderCardLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/rounded_card_background"
+    android:padding="14dp"
+    android:minHeight="120dp">
+
+    <TextView
+        android:id="@+id/tvDetailHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#8CFFFFFF"
+        android:textSize="13sp"
+        android:textAllCaps="true"
+        android:letterSpacing="0.05" />
+
+    <TextView
+        android:id="@+id/tvDetailValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/white"
+        android:textSize="28sp" />
+
+    <FrameLayout
+        android:id="@+id/sunArcContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginTop="8dp" />
+
+    <LinearLayout
+        android:id="@+id/uvBarContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_marginTop="8dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="4dp">
+
+            <View
+                android:id="@+id/uvBarBackground"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/uv_bar_background" />
+
+            <View
+                android:id="@+id/uvBarFill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/uv_bar_indicator" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvDetailSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="#B3FFFFFF"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+</com.example.weather_app2.views.StickyHeaderCardLayout>
