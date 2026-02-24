@@ -62,6 +62,7 @@ class WeatherEffectsView @JvmOverloads constructor(
     private var showClouds = false
     private var showLightning = false
     private var showFog = false
+    private var showSun = false
     private var isCompact = false
     private var landingLineY: Float = -1f
 
@@ -80,6 +81,8 @@ class WeatherEffectsView @JvmOverloads constructor(
     private var raindropBitmap: Bitmap? = null
     private var snowflakeBitmap1: Bitmap? = null
     private var snowflakeBitmap2: Bitmap? = null
+    private var sunBitmap: Bitmap? = null
+    private var sunRotation: Float = 0f
 
     private val starPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.WHITE
@@ -156,6 +159,13 @@ class WeatherEffectsView @JvmOverloads constructor(
                 snowflakeBitmap2 = sf2.bitmap
             }
         } catch (_: Exception) {}
+
+        try {
+            val sd = ContextCompat.getDrawable(context, R.drawable.sun_sprite)
+            if (sd is BitmapDrawable) {
+                sunBitmap = sd.bitmap
+            }
+        } catch (_: Exception) {}
     }
 
     fun setWeatherCondition(iconTag: String) {
@@ -165,6 +175,7 @@ class WeatherEffectsView @JvmOverloads constructor(
         showClouds = false
         showLightning = false
         showFog = false
+        showSun = false
         cloudCount = 5
         rainCount = 60
         snowCount = 120
@@ -172,13 +183,16 @@ class WeatherEffectsView @JvmOverloads constructor(
         overcastClouds = false
 
         when (iconTag) {
-            "clear_d", "clear_morning", "clear_afternoon", "clear_sunset" -> { }
+            "clear_d", "clear_morning", "clear_afternoon", "clear_sunset" -> {
+                showSun = true
+            }
             "clear_n", "clear_dawn", "clear_evening" -> {
                 showStars = true
             }
             "mainly_clear_d", "mainly_clear_morning", "mainly_clear_sunset" -> {
                 showClouds = true
                 cloudCount = 2
+                showSun = true
             }
             "mainly_clear_n" -> {
                 showClouds = true
@@ -188,6 +202,7 @@ class WeatherEffectsView @JvmOverloads constructor(
             "partly_cloudy_d", "partly_cloudy_morning", "partly_cloudy_sunset" -> {
                 showClouds = true
                 cloudCount = 4
+                showSun = true
             }
             "partly_cloudy_n" -> {
                 showClouds = true
@@ -547,6 +562,7 @@ class WeatherEffectsView @JvmOverloads constructor(
         val h = height.toFloat()
         if (w <= 0 || h <= 0) return
 
+        if (showSun) drawSun(canvas, w, h, clampedDelta)
         if (showClouds) drawClouds(canvas, w, h, clampedDelta)
         if (showFog) drawFog(canvas, w, h, clampedDelta, currentTime)
         if (showStars) drawStars(canvas, w, h, clampedDelta, currentTime)
@@ -726,6 +742,31 @@ class WeatherEffectsView @JvmOverloads constructor(
             lightningPaint.alpha = (alpha * 255).toInt()
             canvas.drawRect(0f, 0f, w, h, lightningPaint)
         }
+    }
+
+    private fun drawSun(canvas: Canvas, w: Float, h: Float, delta: Float) {
+        val bitmap = sunBitmap ?: return
+        if (isCompact) return
+
+        sunRotation += 3f * delta
+        if (sunRotation >= 360f) sunRotation -= 360f
+
+        val sunSize = 180f * density
+        val cx = w * 0.22f
+        val cy = h * 0.08f
+        val halfSize = sunSize / 2f
+
+        bitmapPaint.alpha = 255
+
+        canvas.save()
+        canvas.translate(cx, cy)
+        canvas.rotate(sunRotation)
+
+        reusableSrcRect.set(0, 0, bitmap.width, bitmap.height)
+        reusableDstRect.set(-halfSize, -halfSize, halfSize, halfSize)
+        canvas.drawBitmap(bitmap, reusableSrcRect, reusableDstRect, bitmapPaint)
+
+        canvas.restore()
     }
 
     private fun drawFog(canvas: Canvas, w: Float, h: Float, delta: Float, currentTime: Long) {
