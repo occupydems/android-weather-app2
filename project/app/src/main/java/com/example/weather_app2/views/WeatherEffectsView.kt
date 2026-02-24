@@ -751,8 +751,8 @@ class WeatherEffectsView @JvmOverloads constructor(
         sunRotation += 3f * delta
         if (sunRotation >= 360f) sunRotation -= 360f
 
-        val sunSize = 180f * density
-        val cx = w * 0.22f
+        val sunSize = 540f * density
+        val cx = w * 0.12f
         val cy = h * 0.08f
         val halfSize = sunSize / 2f
 
