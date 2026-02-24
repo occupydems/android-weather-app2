@@ -769,13 +769,16 @@ class WeatherEffectsView @JvmOverloads constructor(
         bitmapPaint.alpha = 255
 
         if (raysBmp != null) {
-            val halfRays = raysSize / 2f
+            val dotFracX = 0.4501f
+            val dotFracY = 0.4951f
+            val dotOffX = dotFracX * raysSize
+            val dotOffY = dotFracY * raysSize
             bitmapPaint.alpha = 150
             canvas.save()
             canvas.translate(cx, cy)
             canvas.rotate(sunRotation)
             reusableSrcRect.set(0, 0, raysBmp.width, raysBmp.height)
-            reusableDstRect.set(-halfRays, -halfRays, halfRays, halfRays)
+            reusableDstRect.set(-dotOffX, -dotOffY, raysSize - dotOffX, raysSize - dotOffY)
             canvas.drawBitmap(raysBmp, reusableSrcRect, reusableDstRect, bitmapPaint)
             canvas.restore()
             bitmapPaint.alpha = 255
