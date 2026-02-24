@@ -138,6 +138,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         try {
             val renderer = com.example.weather_app2.engine.WeatherEffectsRenderer(this)
             renderer.initialize()
+            renderer.id = R.id.oppoRendererView
 
             val container = binding.motionContainer
             container.addView(renderer, 0,
