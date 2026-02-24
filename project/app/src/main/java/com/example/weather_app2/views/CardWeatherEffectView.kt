@@ -120,7 +120,7 @@ class CardWeatherEffectView(context: Context) : FrameLayout(context) {
             iconCode.startsWith("snow") || iconCode.startsWith("light_snow") -> if (isTablet) "snow_tablet.lottie" else "snow.lottie"
             iconCode.startsWith("sleet") || iconCode.startsWith("freezing_drizzle") -> if (isTablet) "snow_tablet.lottie" else "snow.lottie"
             iconCode.startsWith("heavy_rain") -> "heavy_rain.lottie"
-            iconCode.startsWith("thunderstorm") -> "heavy_rain.lottie"
+            iconCode.startsWith("thunderstorm") || iconCode.startsWith("hail") -> "heavy_rain.lottie"
             iconCode.startsWith("light_rain") || iconCode.startsWith("rain") -> if (isTablet) "rain_tablet.lottie" else "rain.lottie"
             iconCode.startsWith("drizzle") || iconCode.startsWith("light_drizzle") -> if (isTablet) "rain_tablet.lottie" else "rain.lottie"
             else -> {

@@ -168,9 +168,10 @@ class WeatherForecastActivityViewModel @Inject constructor(
     }
 
     fun getApiCallTime(): String {
+        val dt = currentWeatherData.value?.dt ?: return ""
         return application.getString(R.string.lastUpdateHeader) +
                 ClockUtils.getTimeFromUnixTimestamp(
-                    currentWeatherData.value!!.dt * 1000L,
+                    dt * 1000L,
                     repository.deviceTimezone * 1000L,
                     repository.deviceTimezone * 1000L,
                     true,

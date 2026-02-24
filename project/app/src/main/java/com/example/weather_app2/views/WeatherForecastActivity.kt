@@ -46,6 +46,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
     private val lottieEffectManager = StickyHeaderEffectManager()
     private var oppoRenderer: com.example.weather_app2.engine.WeatherEffectsRenderer? = null
     private var currentWeatherTag: String = ""
+    private var initialLocationDone = false
 
     override fun onCreate(
         savedInstanceState: Bundle?
@@ -60,6 +61,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
 
         checkPermissions()
         getDeviceLocation()
+        initialLocationDone = true
 
         val currentWeatherDataObserver = Observer<CurrentWeatherDataResponse> { newData ->
             updateBackground()
@@ -116,7 +118,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         super.onResume()
         applyStickyHeaderPreference()
         oppoRenderer?.onActivityResume()
-        if (hasLocationPermission()) {
+        if (initialLocationDone && hasLocationPermission()) {
             getDeviceLocation()
         }
     }
@@ -150,9 +152,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
                 }
             )
             oppoRenderer = renderer
-        } catch (e: Exception) {
-            oppoRenderer = null
-        } catch (e: UnsatisfiedLinkError) {
+        } catch (e: Throwable) {
             oppoRenderer = null
         }
     }
@@ -309,7 +309,8 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
     }
 
     private fun updateBackground(){
-        val weatherTag = viewModel.currentWeatherData.value!!.weather[0].icon
+        val data = viewModel.currentWeatherData.value ?: return
+        val weatherTag = data.weather.firstOrNull()?.icon ?: return
         currentWeatherTag = weatherTag
         val headerColorInt = UiUtils.getHeaderColor(weatherTag)
         val cardBg = UiUtils.getCardBackground(weatherTag)
@@ -372,11 +373,11 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
                 R.string.main_L_temp,
                 data.main.temp_min.toInt()
             )
+            val iconTag = viewModel.currentWeatherData.value?.weather?.firstOrNull()?.icon ?: "clear_d"
             tvApiCallTime.setTextColor(
                 ContextCompat.getColor(
                     applicationContext,
-                    UiUtils.getHeaderColor(viewModel.currentWeatherData.value!!.weather[0].icon
-                    )
+                    UiUtils.getHeaderColor(iconTag)
                 )
             )
             tvFeelsLike.text = "Feels like ${data.main.feels_like.toInt()}°"
@@ -562,6 +563,9 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
 
     private fun iconToWmoCode(icon: String): Int {
         val base = icon.removeSuffix("_d").removeSuffix("_n")
+            .removeSuffix("_dawn").removeSuffix("_morning")
+            .removeSuffix("_afternoon").removeSuffix("_sunset")
+            .removeSuffix("_evening")
         return when (base) {
             "clear" -> 0
             "mainly_clear" -> 1
@@ -579,6 +583,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
             "snow" -> 73
             "heavy_snow" -> 75
             "thunderstorm" -> 95
+            "hail" -> 99
             else -> 2
         }
     }

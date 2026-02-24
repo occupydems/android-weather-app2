@@ -32,35 +32,6 @@ jobs:
       run: |
         sdkmanager "build-tools;33.0.2" "platforms;android-33"
 
-    - name: Restore cached debug keystore
-      id: cache-keystore
-      uses: actions/cache@v4
-      with:
-        path: project/debug.keystore
-        key: debug-keystore-v1
-
-    - name: Setup debug keystore
-      run: |
-        if [ -n "${{ secrets.DEBUG_KEYSTORE }}" ]; then
-          echo "${{ secrets.DEBUG_KEYSTORE }}" | base64 -d > project/debug.keystore
-          echo "Using DEBUG_KEYSTORE secret"
-        elif [ -f project/debug.keystore ]; then
-          echo "Using cached debug keystore for consistent signing"
-        else
-          keytool -genkey -v \
-            -keystore project/debug.keystore \
-            -storepass android \
-            -alias androiddebugkey \
-            -keypass android \
-            -keyalg RSA \
-            -keysize 2048 \
-            -validity 10000 \
-            -dname "CN=Android Debug,O=Android,C=US" \
-            -deststoretype pkcs12
-          echo "Generated new keystore - will be cached for future builds"
-        fi
-      id: keystore
-
     - name: Grant execute permission for gradlew
       run: chmod +x project/gradlew
 

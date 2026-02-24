@@ -140,6 +140,7 @@ class StickyHeaderCardLayout @JvmOverloads constructor(
         showRainSplash = condition.startsWith("rain") ||
                 condition.startsWith("heavy_rain") ||
                 condition.startsWith("thunderstorm") ||
+                condition.startsWith("hail") ||
                 condition.startsWith("light_rain") ||
                 condition.startsWith("drizzle") ||
                 condition.startsWith("light_drizzle") ||
