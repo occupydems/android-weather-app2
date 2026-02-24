@@ -48,6 +48,11 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
     private var currentWeatherTag: String = ""
     private var initialLocationDone = false
 
+    private fun isMyLocationMode(): Boolean {
+        val prefs = getSharedPreferences("weather_prefs", MODE_PRIVATE)
+        return prefs.getBoolean("is_my_location", true)
+    }
+
     override fun onCreate(
         savedInstanceState: Bundle?
     ) {
@@ -59,8 +64,19 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         setUpClickListeners()
         initOppoEngine()
 
-        checkPermissions()
-        getDeviceLocation()
+        if (isMyLocationMode()) {
+            checkPermissions()
+            getDeviceLocation()
+        } else {
+            val prefs = getSharedPreferences("weather_prefs", MODE_PRIVATE)
+            val savedLocation = prefs.getString("last_location", null)
+            if (savedLocation != null) {
+                restoreFromSavedPrefs(prefs, savedLocation)
+            } else {
+                checkPermissions()
+                getDeviceLocation()
+            }
+        }
         initialLocationDone = true
 
         val currentWeatherDataObserver = Observer<CurrentWeatherDataResponse> { newData ->
@@ -118,7 +134,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         super.onResume()
         applyStickyHeaderPreference()
         oppoRenderer?.onActivityResume()
-        if (initialLocationDone && hasLocationPermission()) {
+        if (initialLocationDone && isMyLocationMode() && hasLocationPermission()) {
             getDeviceLocation()
         }
     }

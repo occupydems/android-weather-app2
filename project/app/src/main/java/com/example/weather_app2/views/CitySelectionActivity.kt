@@ -80,9 +80,15 @@ class CitySelectionActivity : AppCompatActivity() {
         cityAdapter = CitySelectionAdapter(
             mutableListOf(),
             itemClickListener = { item ->
+                val prefs = getSharedPreferences("weather_prefs", MODE_PRIVATE)
                 if (DummyWeatherData.isDummyId(item.id)) {
+                    prefs.edit().putBoolean("is_my_location", false).apply()
                     viewModel.updateMainWeatherForecastLocation("${DummyWeatherData.DUMMY_PREFIX}${item.icon}", 0.0, 0.0)
+                } else if (item.id == 1000) {
+                    prefs.edit().putBoolean("is_my_location", true).apply()
+                    viewModel.updateMainWeatherForecastLocation(item.cityName, item.latitude, item.longitude)
                 } else {
+                    prefs.edit().putBoolean("is_my_location", false).apply()
                     viewModel.updateMainWeatherForecastLocation(item.cityName, item.latitude, item.longitude)
                 }
                 finish()
