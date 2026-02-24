@@ -271,10 +271,16 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         val address = try {
             Geocoder(this).getFromLocation(lat, lon, 1)?.firstOrNull()
         } catch (_: Exception) { null }
-        val name = address?.locality
-            ?: address?.subAdminArea
-            ?: address?.adminArea
-            ?: String.format("%.2f, %.2f", lat, lon)
+        val neighborhood = address?.subLocality
+        val city = address?.locality
+        val name = when {
+            neighborhood != null && city != null && neighborhood != city -> "$neighborhood, $city"
+            neighborhood != null -> neighborhood
+            city != null -> city
+            else -> address?.subAdminArea
+                ?: address?.adminArea
+                ?: String.format("%.2f, %.2f", lat, lon)
+        }
         viewModel.updateDeviceLocationWithCoords(name, lat, lon)
     }
 
