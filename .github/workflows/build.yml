@@ -22,6 +22,27 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: Cache Gradle wrapper and dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.gradle/wrapper
+          ~/.gradle/caches
+          project/.gradle
+          project/build
+          project/app/build
+        key: gradle-${{ hashFiles('project/gradle/wrapper/gradle-wrapper.properties', 'project/build.gradle', 'project/app/build.gradle') }}
+        restore-keys: |
+          gradle-
+
+    - name: Cache Android SDK
+      uses: actions/cache@v4
+      with:
+        path: /usr/local/lib/android/sdk
+        key: android-sdk-33-v1
+        restore-keys: |
+          android-sdk-
+
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
@@ -39,6 +60,8 @@ jobs:
       run: |
         cd project
         ./gradlew assembleDebug \
+          --build-cache \
+          --parallel \
           -Pandroid.injected.signing.store.file=$(pwd)/debug.keystore \
           -Pandroid.injected.signing.store.password=android \
           -Pandroid.injected.signing.key.alias=androiddebugkey \

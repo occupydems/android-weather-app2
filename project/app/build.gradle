@@ -40,6 +40,12 @@ android {
     kotlinOptions {
         jvmTarget = '11'
     }
+    kapt {
+        javacOptions {
+            option("-source", "11")
+            option("-target", "11")
+        }
+    }
 
     sourceSets {
         main {
