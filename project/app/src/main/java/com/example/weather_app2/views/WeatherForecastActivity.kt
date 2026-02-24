@@ -273,15 +273,50 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         } catch (_: Exception) { null }
         val neighborhood = address?.subLocality
         val city = address?.locality
-        val name = when {
-            neighborhood != null && city != null && neighborhood != city -> "$neighborhood, $city"
-            neighborhood != null -> neighborhood
-            city != null -> city
-            else -> address?.subAdminArea
-                ?: address?.adminArea
-                ?: String.format("%.2f, %.2f", lat, lon)
+        if (neighborhood != null) {
+            val name = if (city != null && neighborhood != city) "$neighborhood, $city" else neighborhood
+            viewModel.updateDeviceLocationWithCoords(name, lat, lon)
+        } else {
+            lifecycleScope.launch {
+                val name = resolveNeighborhoodFromNominatim(lat, lon)
+                    ?: when {
+                        city != null -> city
+                        else -> address?.subAdminArea
+                            ?: address?.adminArea
+                            ?: String.format("%.2f, %.2f", lat, lon)
+                    }
+                viewModel.updateDeviceLocationWithCoords(name, lat, lon)
+            }
         }
-        viewModel.updateDeviceLocationWithCoords(name, lat, lon)
+    }
+
+    private suspend fun resolveNeighborhoodFromNominatim(lat: Double, lon: Double): String? {
+        return kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+            try {
+                val url = "https://nominatim.openstreetmap.org/reverse?lat=$lat&lon=$lon&format=json&zoom=18&addressdetails=1"
+                val conn = java.net.URL(url).openConnection() as java.net.HttpURLConnection
+                conn.setRequestProperty("User-Agent", "WeatherApp2/1.0")
+                conn.connectTimeout = 3000
+                conn.readTimeout = 3000
+                val json = conn.inputStream.bufferedReader().readText()
+                conn.disconnect()
+                val obj = org.json.JSONObject(json)
+                val addr = obj.optJSONObject("address") ?: return@withContext null
+                val neighbourhood = addr.optString("neighbourhood", "")
+                    .ifEmpty { addr.optString("suburb", "") }
+                    .ifEmpty { addr.optString("quarter", "") }
+                val city = addr.optString("city", "")
+                    .ifEmpty { addr.optString("town", "") }
+                    .ifEmpty { addr.optString("village", "") }
+                    .ifEmpty { addr.optString("municipality", "") }
+                when {
+                    neighbourhood.isNotEmpty() && city.isNotEmpty() -> "$neighbourhood, $city"
+                    neighbourhood.isNotEmpty() -> neighbourhood
+                    city.isNotEmpty() -> city
+                    else -> null
+                }
+            } catch (_: Exception) { null }
+        }
     }
 
     private fun restoreFromSavedPrefs(prefs: android.content.SharedPreferences, savedLocation: String) {
