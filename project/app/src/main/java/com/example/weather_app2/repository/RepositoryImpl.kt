@@ -32,7 +32,7 @@ class RepositoryImpl(
     }
 
     val unitOfMeasurement: MutableLiveData<String> by lazy {
-        MutableLiveData<String>(UnitOfMeasurement.METRIC.value)
+        MutableLiveData<String>(UnitOfMeasurement.IMPERIAL.value)
     }
 
     val mainForecastLocation: MutableLiveData<String> by lazy {
@@ -49,7 +49,7 @@ class RepositoryImpl(
     init {
         unitOfMeasurement.value = unitOfMeasurementSP.getString(
             "unitOfMeasurement",
-            UnitOfMeasurement.METRIC.value
+            UnitOfMeasurement.IMPERIAL.value
         )
     }
 
@@ -59,6 +59,10 @@ class RepositoryImpl(
 
     private fun getWindSpeedUnit(unitsSystem: String): String {
         return if (unitsSystem == UnitOfMeasurement.METRIC.value) "kmh" else "mph"
+    }
+
+    private fun getPrecipitationUnit(unitsSystem: String): String {
+        return if (unitsSystem == UnitOfMeasurement.METRIC.value) "mm" else "inch"
     }
 
     private fun parseIsoToUnix(isoTime: String, utcOffsetSeconds: Int): Int {
@@ -248,7 +252,8 @@ class RepositoryImpl(
                 lat = lat,
                 lon = lon,
                 tempUnit = getTemperatureUnit(unitsSystem),
-                windUnit = getWindSpeedUnit(unitsSystem)
+                windUnit = getWindSpeedUnit(unitsSystem),
+                precipUnit = getPrecipitationUnit(unitsSystem)
             )
 
             if (!forecastResponse.isSuccessful || forecastResponse.body() == null) {
@@ -303,7 +308,8 @@ class RepositoryImpl(
                 lat = city.latitude,
                 lon = city.longitude,
                 tempUnit = getTemperatureUnit(unitsSystem),
-                windUnit = getWindSpeedUnit(unitsSystem)
+                windUnit = getWindSpeedUnit(unitsSystem),
+                precipUnit = getPrecipitationUnit(unitsSystem)
             )
 
             if (!forecastResponse.isSuccessful || forecastResponse.body() == null) {
@@ -338,7 +344,8 @@ class RepositoryImpl(
                 lat = lat,
                 lon = lon,
                 tempUnit = getTemperatureUnit(unitsSystem),
-                windUnit = getWindSpeedUnit(unitsSystem)
+                windUnit = getWindSpeedUnit(unitsSystem),
+                precipUnit = getPrecipitationUnit(unitsSystem)
             )
 
             if (!forecastResponse.isSuccessful || forecastResponse.body() == null) {

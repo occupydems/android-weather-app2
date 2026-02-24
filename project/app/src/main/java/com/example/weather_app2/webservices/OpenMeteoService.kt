@@ -17,6 +17,7 @@ interface OpenMeteoService {
         @Query("daily") daily: String = "weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max",
         @Query("temperature_unit") tempUnit: String = "celsius",
         @Query("wind_speed_unit") windUnit: String = "kmh",
+        @Query("precipitation_unit") precipUnit: String = "mm",
         @Query("timezone") timezone: String = "auto",
         @Query("forecast_days") forecastDays: Int = 10
     ): Response<OpenMeteoForecastResponse>

@@ -318,11 +318,20 @@ class WeatherForecastActivityViewModel @Inject constructor(
             subtitle = visibilitySubtitle
         ))
 
-        items.add(WeatherDetailItem(
-            header = application.getString(R.string.pressureHeader),
-            value = application.getString(R.string.pascals, data.main.pressure),
-            subtitle = "Standard pressure is 1013 hPa."
-        ))
+        if (unit == UnitOfMeasurement.METRIC.value) {
+            items.add(WeatherDetailItem(
+                header = application.getString(R.string.pressureHeader),
+                value = application.getString(R.string.pascals, data.main.pressure),
+                subtitle = "Standard pressure is 1013 hPa."
+            ))
+        } else {
+            val inHg = data.main.pressure * 0.02953
+            items.add(WeatherDetailItem(
+                header = application.getString(R.string.pressureHeader),
+                value = "${String.format("%.2f", inHg)} inHg",
+                subtitle = "Standard pressure is 29.92 inHg."
+            ))
+        }
 
         val windDeg = data.wind.deg
         val directions = arrayOf("N", "NE", "E", "SE", "S", "SW", "W", "NW")

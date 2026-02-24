@@ -84,8 +84,20 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
 
         binding.hourlyForecastContainer.stickyHeaderCount = 1
         binding.dailyForecastCard.stickyHeaderCount = 1
+        binding.adCard.stickyHeaderCount = 1
         stickyCards.add(binding.hourlyForecastContainer)
         stickyCards.add(binding.dailyForecastCard)
+        stickyCards.add(binding.adCard)
+
+        binding.adContainer.post {
+            val cardWidth = binding.adCard.width
+            val headerHeight = binding.tvAdHeader.height
+            val dividerHeight = (0.5f * resources.displayMetrics.density).toInt()
+            val squareSize = cardWidth - headerHeight - dividerHeight
+            binding.adContainer.layoutParams = binding.adContainer.layoutParams.apply {
+                height = squareSize.coerceAtLeast((200 * resources.displayMetrics.density).toInt())
+            }
+        }
 
         binding.nsvWeatherDetails.post {
             binding.weatherEffectsView.setLandingLine(binding.nsvWeatherDetails.top.toFloat())
@@ -314,6 +326,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
             divider.setBackgroundResource(headerColorInt)
             hourlyForecastContainer.setBackgroundResource(cardBg)
             dailyForecastCard.setBackgroundResource(cardBg)
+            adCard.setBackgroundResource(cardBg)
             weatherEffectsView.setWeatherCondition(weatherTag)
         }
         for (card in stickyCards) {
