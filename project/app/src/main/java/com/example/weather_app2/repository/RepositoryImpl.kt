@@ -89,9 +89,6 @@ class RepositoryImpl(
             val timeParts = current.time.split("T")
             if (timeParts.size > 1) timeParts[1].split(":")[0].toInt() else 12
         } catch (_: Exception) { 12 }
-        val iconCode = WeatherCodeMapper.getIconCode(wmoCode, isDay, hourOfDay)
-        val description = WeatherCodeMapper.getDescription(wmoCode)
-        val mainDesc = WeatherCodeMapper.getMainDescription(wmoCode)
 
         val daily = forecast.daily
         val tempMax = daily?.temperature_2m_max?.getOrNull(0) ?: current.temperature_2m
@@ -105,6 +102,10 @@ class RepositoryImpl(
         if (daily?.sunset != null && daily.sunset.isNotEmpty()) {
             sunsetUnix = parseIsoToUnix(daily.sunset[0], forecast.utc_offset_seconds)
         }
+
+        val iconCode = WeatherCodeMapper.getIconCode(wmoCode, isDay, hourOfDay, sunriseUnix, sunsetUnix)
+        val description = WeatherCodeMapper.getDescription(wmoCode)
+        val mainDesc = WeatherCodeMapper.getMainDescription(wmoCode)
 
         val dtUnix = parseIsoToUnix(current.time, forecast.utc_offset_seconds)
 

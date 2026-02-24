@@ -27,44 +27,70 @@ object WeatherCodeMapper {
     }
 
     fun getIconCode(wmoCode: Int, isDay: Boolean, hourOfDay: Int): String {
+        return getIconCode(wmoCode, isDay, hourOfDay, 0, 0)
+    }
+
+    fun getIconCode(wmoCode: Int, isDay: Boolean, hourOfDay: Int, sunriseUnix: Int, sunsetUnix: Int): String {
+        val period = getTimePeriod(hourOfDay, isDay, sunriseUnix, sunsetUnix)
         return when (wmoCode) {
-            0 -> {
-                when (hourOfDay) {
-                    in 5..6 -> "clear_dawn"
-                    in 7..9 -> "clear_morning"
-                    in 10..13 -> "clear_d"
-                    in 14..16 -> "clear_afternoon"
-                    in 17..18 -> "clear_sunset"
-                    in 19..20 -> "clear_evening"
-                    else -> "clear_n"
-                }
+            0 -> "clear_$period"
+            1 -> when (period) {
+                "dawn", "morning" -> "mainly_clear_morning"
+                "d", "afternoon" -> "mainly_clear_d"
+                "sunset" -> "mainly_clear_sunset"
+                "evening" -> "mainly_clear_n"
+                else -> "mainly_clear_n"
             }
-            1 -> {
-                when (hourOfDay) {
-                    in 5..9 -> "mainly_clear_morning"
-                    in 10..16 -> "mainly_clear_d"
-                    in 17..18 -> "mainly_clear_sunset"
-                    else -> "mainly_clear_n"
-                }
+            2 -> when (period) {
+                "dawn", "morning" -> "partly_cloudy_morning"
+                "d", "afternoon" -> "partly_cloudy_d"
+                "sunset" -> "partly_cloudy_sunset"
+                "evening" -> "partly_cloudy_n"
+                else -> "partly_cloudy_n"
             }
-            2 -> {
-                when (hourOfDay) {
-                    in 5..9 -> "partly_cloudy_morning"
-                    in 10..16 -> "partly_cloudy_d"
-                    in 17..18 -> "partly_cloudy_sunset"
-                    else -> "partly_cloudy_n"
-                }
-            }
-            3 -> {
-                when (hourOfDay) {
-                    in 5..9 -> "overcast_morning"
-                    in 10..16 -> "overcast_d"
-                    in 17..18 -> "overcast_sunset"
-                    else -> "overcast_n"
-                }
+            3 -> when (period) {
+                "dawn", "morning" -> "overcast_morning"
+                "d", "afternoon" -> "overcast_d"
+                "sunset" -> "overcast_sunset"
+                "evening" -> "overcast_n"
+                else -> "overcast_n"
             }
             99 -> if (isDay) "hail_d" else "hail_n"
             else -> getIconCode(wmoCode, isDay)
+        }
+    }
+
+    private fun getTimePeriod(hourOfDay: Int, isDay: Boolean, sunriseUnix: Int, sunsetUnix: Int): String {
+        if (sunriseUnix > 0 && sunsetUnix > 0) {
+            val cal = java.util.Calendar.getInstance()
+            cal.timeInMillis = sunriseUnix.toLong() * 1000
+            val sunriseHour = cal.get(java.util.Calendar.HOUR_OF_DAY)
+            val sunriseMin = cal.get(java.util.Calendar.MINUTE)
+            cal.timeInMillis = sunsetUnix.toLong() * 1000
+            val sunsetHour = cal.get(java.util.Calendar.HOUR_OF_DAY)
+            val sunsetMin = cal.get(java.util.Calendar.MINUTE)
+            val sunriseMinutes = sunriseHour * 60 + sunriseMin
+            val sunsetMinutes = sunsetHour * 60 + sunsetMin
+            val nowMinutes = hourOfDay * 60 + 30
+            return when {
+                nowMinutes < sunriseMinutes - 60 -> "n"
+                nowMinutes < sunriseMinutes + 30 -> "dawn"
+                nowMinutes < sunriseMinutes + 150 -> "morning"
+                nowMinutes < sunsetMinutes - 180 -> "d"
+                nowMinutes < sunsetMinutes - 60 -> "afternoon"
+                nowMinutes < sunsetMinutes + 30 -> "sunset"
+                nowMinutes < sunsetMinutes + 90 -> "evening"
+                else -> "n"
+            }
+        }
+        return when (hourOfDay) {
+            in 5..6 -> "dawn"
+            in 7..9 -> "morning"
+            in 10..13 -> "d"
+            in 14..16 -> "afternoon"
+            in 17..18 -> "sunset"
+            in 19..20 -> "evening"
+            else -> "n"
         }
     }
 
