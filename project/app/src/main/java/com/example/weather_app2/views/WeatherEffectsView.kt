@@ -81,7 +81,8 @@ class WeatherEffectsView @JvmOverloads constructor(
     private var raindropBitmap: Bitmap? = null
     private var snowflakeBitmap1: Bitmap? = null
     private var snowflakeBitmap2: Bitmap? = null
-    private var sunBitmap: Bitmap? = null
+    private var sunBaseBitmap: Bitmap? = null
+    private var sunRaysBitmap: Bitmap? = null
     private var sunRotation: Float = 0f
 
     private val starPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -161,9 +162,16 @@ class WeatherEffectsView @JvmOverloads constructor(
         } catch (_: Exception) {}
 
         try {
-            val sd = ContextCompat.getDrawable(context, R.drawable.sun_sprite)
-            if (sd is BitmapDrawable) {
-                sunBitmap = sd.bitmap
+            val sb = ContextCompat.getDrawable(context, R.drawable.sun_base)
+            if (sb is BitmapDrawable) {
+                sunBaseBitmap = sb.bitmap
+            }
+        } catch (_: Exception) {}
+
+        try {
+            val sr = ContextCompat.getDrawable(context, R.drawable.sun_rays)
+            if (sr is BitmapDrawable) {
+                sunRaysBitmap = sr.bitmap
             }
         } catch (_: Exception) {}
     }
@@ -745,28 +753,38 @@ class WeatherEffectsView @JvmOverloads constructor(
     }
 
     private fun drawSun(canvas: Canvas, w: Float, h: Float, delta: Float) {
-        val bitmap = sunBitmap ?: return
         if (isCompact) return
+        val baseBmp = sunBaseBitmap
+        val raysBmp = sunRaysBitmap
+        if (baseBmp == null && raysBmp == null) return
 
         sunRotation += 3f * delta
         if (sunRotation >= 360f) sunRotation -= 360f
 
-        val sunSize = 540f * density
         val cx = w * 0.12f
         val cy = h * 0.08f
-        val halfSize = sunSize / 2f
+        val baseSize = 540f * density
+        val raysSize = baseSize * 2.8f
 
         bitmapPaint.alpha = 255
 
-        canvas.save()
-        canvas.translate(cx, cy)
-        canvas.rotate(sunRotation)
+        if (raysBmp != null) {
+            val halfRays = raysSize / 2f
+            canvas.save()
+            canvas.translate(cx, cy)
+            canvas.rotate(sunRotation)
+            reusableSrcRect.set(0, 0, raysBmp.width, raysBmp.height)
+            reusableDstRect.set(-halfRays, -halfRays, halfRays, halfRays)
+            canvas.drawBitmap(raysBmp, reusableSrcRect, reusableDstRect, bitmapPaint)
+            canvas.restore()
+        }
 
-        reusableSrcRect.set(0, 0, bitmap.width, bitmap.height)
-        reusableDstRect.set(-halfSize, -halfSize, halfSize, halfSize)
-        canvas.drawBitmap(bitmap, reusableSrcRect, reusableDstRect, bitmapPaint)
-
-        canvas.restore()
+        if (baseBmp != null) {
+            val halfBase = baseSize / 2f
+            reusableSrcRect.set(0, 0, baseBmp.width, baseBmp.height)
+            reusableDstRect.set(cx - halfBase, cy - halfBase, cx + halfBase, cy + halfBase)
+            canvas.drawBitmap(baseBmp, reusableSrcRect, reusableDstRect, bitmapPaint)
+        }
     }
 
     private fun drawFog(canvas: Canvas, w: Float, h: Float, delta: Float, currentTime: Long) {
