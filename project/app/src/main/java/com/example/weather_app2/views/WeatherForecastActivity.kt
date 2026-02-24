@@ -60,8 +60,6 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         savedInstanceState: Bundle?
     ) {
         super.onCreate(savedInstanceState)
-        androidx.core.view.WindowCompat.setDecorFitsSystemWindows(window, false)
-        window.statusBarColor = android.graphics.Color.TRANSPARENT
         binding = ActivityWeatherForecastBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -358,12 +356,9 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         currentWeatherTag = weatherTag
         val headerColorInt = UiUtils.getHeaderColor(weatherTag)
         val cardBg = UiUtils.getCardBackground(weatherTag)
-        val sbColor = ContextCompat.getColor(this, UiUtils.getStatusBarColor(weatherTag))
-        window.statusBarColor = android.graphics.Color.argb(
-            140,
-            android.graphics.Color.red(sbColor),
-            android.graphics.Color.green(sbColor),
-            android.graphics.Color.blue(sbColor)
+        window.statusBarColor = ContextCompat.getColor(
+            this,
+            UiUtils.getStatusBarColor(weatherTag)
         )
         binding.apply {
             motionContainer.setBackgroundResource(
