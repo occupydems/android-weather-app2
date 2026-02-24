@@ -4,7 +4,7 @@ import android.graphics.LinearGradient
 import android.graphics.Shader
 import android.graphics.drawable.PaintDrawable
 import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.RectShape
+import android.graphics.drawable.shapes.RoundRectShape
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -131,8 +131,16 @@ class CitySelectionAdapter(
         val colors = CityCardGradients.getCardGradient(icon)
         val positions = floatArrayOf(0f, 0.5f, 1f)
 
+        val cornerRadiusPx = 16f * binding.mlCityShortcut.resources.displayMetrics.density
         val drawable = PaintDrawable().apply {
-            shape = RectShape()
+            shape = RoundRectShape(
+                floatArrayOf(
+                    cornerRadiusPx, cornerRadiusPx,
+                    cornerRadiusPx, cornerRadiusPx,
+                    cornerRadiusPx, cornerRadiusPx,
+                    cornerRadiusPx, cornerRadiusPx
+                ), null, null
+            )
             shaderFactory = object : ShapeDrawable.ShaderFactory() {
                 override fun resize(width: Int, height: Int): Shader {
                     return LinearGradient(
