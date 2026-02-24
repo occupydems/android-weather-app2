@@ -135,27 +135,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
     }
 
     private fun initOppoEngine() {
-        try {
-            val renderer = com.example.weather_app2.engine.WeatherEffectsRenderer(this)
-            renderer.initialize()
-            renderer.id = R.id.oppoRendererView
-
-            val container = binding.motionContainer
-            container.addView(renderer, 0,
-                androidx.constraintlayout.widget.ConstraintLayout.LayoutParams(
-                    androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_PARENT,
-                    androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_PARENT
-                ).apply {
-                    topToTop = androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
-                    bottomToBottom = androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
-                    startToStart = androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
-                    endToEnd = androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
-                }
-            )
-            oppoRenderer = renderer
-        } catch (e: Throwable) {
-            oppoRenderer = null
-        }
+        oppoRenderer = null
     }
 
     private fun applyStickyHeaderPreference() {
