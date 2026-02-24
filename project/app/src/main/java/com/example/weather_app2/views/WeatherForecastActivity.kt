@@ -84,9 +84,9 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         }
         viewModel.errorStatus.observe(this,errorStatusObserver)
 
-        binding.hourlyForecastContainer.stickyHeaderCount = 1
-        binding.dailyForecastCard.stickyHeaderCount = 1
-        binding.adCard.stickyHeaderCount = 1
+        binding.hourlyForecastContainer.stickyHeaderCount = 2
+        binding.dailyForecastCard.stickyHeaderCount = 2
+        binding.adCard.stickyHeaderCount = 2
         stickyCards.add(binding.hourlyForecastContainer)
         stickyCards.add(binding.dailyForecastCard)
         stickyCards.add(binding.adCard)
