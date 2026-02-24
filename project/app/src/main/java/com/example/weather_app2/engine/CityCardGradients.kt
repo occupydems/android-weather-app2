@@ -204,10 +204,100 @@ object CityCardGradients {
         }
     }
 
-    /**
-     * Helper function to convert hex color string to Int
-     * Example: "#4A90D9" -> 0xFF4A90D9
-     */
+    fun getCardGradient(iconTag: String): IntArray {
+        return when (iconTag) {
+            "clear_dawn" -> intArrayOf(0xFF1A2555.toInt(), 0xFF2A3A6A.toInt(), 0xFF4A5A80.toInt())
+            "clear_morning" -> intArrayOf(0xFF55A0E0.toInt(), 0xFF75BBE8.toInt(), 0xFF95D5F0.toInt())
+            "clear_afternoon" -> intArrayOf(0xFF5A8ACC.toInt(), 0xFF7AA0D0.toInt(), 0xFFA0B8D0.toInt())
+            "clear_sunset" -> intArrayOf(0xFFC06040.toInt(), 0xFFD08060.toInt(), 0xFF806090.toInt())
+            "clear_evening" -> intArrayOf(0xFF152050.toInt(), 0xFF1A2A5A.toInt(), 0xFF0D1A47.toInt())
+            "mainly_clear_morning" -> intArrayOf(0xFF5095D0.toInt(), 0xFF70ADD8.toInt(), 0xFF85C0E0.toInt())
+            "mainly_clear_sunset" -> intArrayOf(0xFFA07050.toInt(), 0xFFB08868.toInt(), 0xFF7A7090.toInt())
+            "partly_cloudy_morning" -> intArrayOf(0xFF5580A8.toInt(), 0xFF7098B8.toInt(), 0xFF88AAC5.toInt())
+            "partly_cloudy_sunset" -> intArrayOf(0xFF8A7080.toInt(), 0xFF9A8090.toInt(), 0xFF7A7595.toInt())
+            "overcast_morning" -> intArrayOf(0xFF687888.toInt(), 0xFF8090A0.toInt(), 0xFF98ABB8.toInt())
+            "overcast_sunset" -> intArrayOf(0xFF706870.toInt(), 0xFF887880.toInt(), 0xFF7A7585.toInt())
+            "hail_d" -> intArrayOf(0xFF2A2A3E.toInt(), 0xFF1A1A2E.toInt(), 0xFF0D0D1A.toInt())
+            "hail_n" -> intArrayOf(0xFF1A1A2E.toInt(), 0xFF0D0D1A.toInt(), 0xFF050508.toInt())
+            "clear_d" -> intArrayOf(0xFF4A90D9.toInt(), 0xFF6BAFE0.toInt(), 0xFF87CEEB.toInt())
+            "clear_n" -> intArrayOf(0xFF0D1A47.toInt(), 0xFF0D1A47.toInt(), 0xFF0D1A47.toInt())
+            "mainly_clear_d" -> intArrayOf(0xFF4A8BC8.toInt(), 0xFF6AA8D8.toInt(), 0xFF7EBCE5.toInt())
+            "mainly_clear_n" -> intArrayOf(0xFF0F1E4A.toInt(), 0xFF0F1E4A.toInt(), 0xFF0F1E4A.toInt())
+            "partly_cloudy_d" -> intArrayOf(0xFF5A7FA8.toInt(), 0xFF7A95BB.toInt(), 0xFF8FA8C8.toInt())
+            "partly_cloudy_n" -> intArrayOf(0xFF0D1A47.toInt(), 0xFF1A2555.toInt(), 0xFF0D1A47.toInt())
+            "overcast_d" -> intArrayOf(0xFF5F6E7F.toInt(), 0xFF7A8A9B.toInt(), 0xFF8FA3B8.toInt())
+            "overcast_n" -> intArrayOf(0xFF1A2535.toInt(), 0xFF1A2535.toInt(), 0xFF0F1A2B.toInt())
+            "fog_d" -> intArrayOf(0xFF7E8E9E.toInt(), 0xFF9AABBB.toInt(), 0xFFB5C5D5.toInt())
+            "fog_n" -> intArrayOf(0xFF0D1A47.toInt(), 0xFF1A2A40.toInt(), 0xFF0D1A47.toInt())
+            "light_drizzle_d" -> intArrayOf(0xFF456070.toInt(), 0xFF607080.toInt(), 0xFF708090.toInt())
+            "light_drizzle_n" -> intArrayOf(0xFF4A5A6D.toInt(), 0xFF3A4A5D.toInt(), 0xFF2A3A4D.toInt())
+            "drizzle_d" -> intArrayOf(0xFF4A6080.toInt(), 0xFF607090.toInt(), 0xFF7080A0.toInt())
+            "drizzle_n" -> intArrayOf(0xFF4A5A6D.toInt(), 0xFF3A4A5D.toInt(), 0xFF2A3A4D.toInt())
+            "freezing_drizzle_d" -> intArrayOf(0xFF4A6070.toInt(), 0xFF6A7580.toInt(), 0xFF7A8590.toInt())
+            "freezing_drizzle_n" -> intArrayOf(0xFF3A4A5D.toInt(), 0xFF2A3A50.toInt(), 0xFF1A2A40.toInt())
+            "light_rain_d" -> intArrayOf(0xFF354555.toInt(), 0xFF556575.toInt(), 0xFF708090.toInt())
+            "light_rain_n" -> intArrayOf(0xFF4D5D70.toInt(), 0xFF3D4D60.toInt(), 0xFF2D3D50.toInt())
+            "rain_d" -> intArrayOf(0xFF2B3A47.toInt(), 0xFF4A5A67.toInt(), 0xFF656F7F.toInt())
+            "rain_n" -> intArrayOf(0xFF3D4D60.toInt(), 0xFF2D3D50.toInt(), 0xFF1D2D40.toInt())
+            "heavy_rain_d" -> intArrayOf(0xFF1E2B38.toInt(), 0xFF2A3845.toInt(), 0xFF151F2B.toInt())
+            "heavy_rain_n" -> intArrayOf(0xFF1A2A3D.toInt(), 0xFF0D1A2D.toInt(), 0xFF050F1A.toInt())
+            "sleet_d" -> intArrayOf(0xFF445565.toInt(), 0xFF607080.toInt(), 0xFF758090.toInt())
+            "sleet_n" -> intArrayOf(0xFF455565.toInt(), 0xFF354555.toInt(), 0xFF254555.toInt())
+            "light_snow_d" -> intArrayOf(0xFF90A3B5.toInt(), 0xFFA8B8C8.toInt(), 0xFFC0CDD8.toInt())
+            "light_snow_n" -> intArrayOf(0xFF708090.toInt(), 0xFF608080.toInt(), 0xFF507070.toInt())
+            "snow_d" -> intArrayOf(0xFF9EB0C0.toInt(), 0xFFB0C0D0.toInt(), 0xFFC5D5E5.toInt())
+            "snow_n" -> intArrayOf(0xFF708090.toInt(), 0xFF607080.toInt(), 0xFF507070.toInt())
+            "heavy_snow_d" -> intArrayOf(0xFF9EAFC0.toInt(), 0xFFB8C8D8.toInt(), 0xFFCDD5E0.toInt())
+            "heavy_snow_n" -> intArrayOf(0xFF708090.toInt(), 0xFF607070.toInt(), 0xFF506060.toInt())
+            "thunderstorm_d" -> intArrayOf(0xFF2A2A3E.toInt(), 0xFF1A1A2E.toInt(), 0xFF0D0D1A.toInt())
+            "thunderstorm_n" -> intArrayOf(0xFF1A1A2E.toInt(), 0xFF0D0D1A.toInt(), 0xFF050508.toInt())
+            else -> intArrayOf(0xFF5A7FA8.toInt(), 0xFF7A95BB.toInt(), 0xFF8FA8C8.toInt())
+        }
+    }
+
+    fun getBackgroundGradient(iconTag: String): IntArray {
+        return when (iconTag) {
+            "clear_dawn" -> intArrayOf(0xFF1A2050.toInt(), 0xFF2A3570.toInt(), 0xFF5A5585.toInt())
+            "clear_morning" -> intArrayOf(0xFF45A0E5.toInt(), 0xFF65C0F0.toInt(), 0xFF90E0F8.toInt())
+            "clear_afternoon" -> intArrayOf(0xFF4580CC.toInt(), 0xFF6598D5.toInt(), 0xFF90B0D5.toInt())
+            "clear_sunset" -> intArrayOf(0xFFD06838.toInt(), 0xFFE08858.toInt(), 0xFF906090.toInt())
+            "clear_evening" -> intArrayOf(0xFF101845.toInt(), 0xFF152250.toInt(), 0xFF0D1A47.toInt())
+            "mainly_clear_morning" -> intArrayOf(0xFF4090D5.toInt(), 0xFF60B0E0.toInt(), 0xFF80C8E8.toInt())
+            "mainly_clear_sunset" -> intArrayOf(0xFFB07848.toInt(), 0xFFC09060.toInt(), 0xFF8A7898.toInt())
+            "partly_cloudy_morning" -> intArrayOf(0xFF5088B5.toInt(), 0xFF6AA0C8.toInt(), 0xFF88B8D8.toInt())
+            "partly_cloudy_sunset" -> intArrayOf(0xFF987888.toInt(), 0xFFA88898.toInt(), 0xFF8880A0.toInt())
+            "overcast_morning" -> intArrayOf(0xFF708898.toInt(), 0xFF8FA0B0.toInt(), 0xFFA5B5C5.toInt())
+            "overcast_sunset" -> intArrayOf(0xFF787078.toInt(), 0xFF908088.toInt(), 0xFF858090.toInt())
+            "hail_d" -> intArrayOf(0xFF1A1A3E.toInt(), 0xFF0D0D2E.toInt(), 0xFF050520.toInt())
+            "hail_n" -> intArrayOf(0xFF0D0D1A.toInt(), 0xFF050508.toInt(), 0xFF000000.toInt())
+            else -> getBackgroundGradient(iconTagToWmoCode(iconTag), iconTag.endsWith("_n"))
+        }
+    }
+
+    private fun iconTagToWmoCode(icon: String): Int {
+        val base = icon.removeSuffix("_d").removeSuffix("_n")
+        return when (base) {
+            "clear" -> 0
+            "mainly_clear" -> 1
+            "partly_cloudy" -> 2
+            "overcast" -> 3
+            "fog" -> 45
+            "light_drizzle" -> 51
+            "drizzle" -> 53
+            "freezing_drizzle" -> 56
+            "light_rain" -> 61
+            "rain" -> 63
+            "heavy_rain" -> 65
+            "sleet" -> 66
+            "light_snow" -> 71
+            "snow" -> 73
+            "heavy_snow" -> 75
+            "thunderstorm" -> 95
+            "hail" -> 99
+            else -> 2
+        }
+    }
+
     private fun hexToColorInt(hex: String): Int {
         return ("FF" + hex.removePrefix("#")).toLong(16).toInt()
     }

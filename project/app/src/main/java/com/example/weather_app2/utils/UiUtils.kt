@@ -6,13 +6,13 @@ object UiUtils {
 
     fun getWeatherIcon(iconTag: String): Int {
         return when(iconTag) {
-            "clear_d" -> R.drawable.ic_sun_custom_big_foreground
-            "clear_n" -> R.drawable.ic_moon_custom_big_foreground
-            "mainly_clear_d" -> R.drawable.ic_sun_custom_big_foreground
-            "mainly_clear_n" -> R.drawable.ic_moon_custom_big_foreground
-            "partly_cloudy_d" -> R.drawable.few_clouds_day
-            "partly_cloudy_n" -> R.drawable.few_clouds_night
-            "overcast_d", "overcast_n" -> R.drawable.broken_clouds
+            "clear_d", "clear_morning", "clear_afternoon", "clear_sunset" -> R.drawable.ic_sun_custom_big_foreground
+            "clear_n", "clear_dawn", "clear_evening" -> R.drawable.ic_moon_custom_big_foreground
+            "mainly_clear_d", "mainly_clear_morning" -> R.drawable.ic_sun_custom_big_foreground
+            "mainly_clear_n", "mainly_clear_sunset" -> R.drawable.ic_moon_custom_big_foreground
+            "partly_cloudy_d", "partly_cloudy_morning" -> R.drawable.few_clouds_day
+            "partly_cloudy_n", "partly_cloudy_sunset" -> R.drawable.few_clouds_night
+            "overcast_d", "overcast_n", "overcast_morning", "overcast_sunset" -> R.drawable.broken_clouds
             "fog_d", "fog_n" -> R.drawable.mist
             "light_drizzle_d", "light_drizzle_n" -> R.drawable.shower_rain
             "drizzle_d", "drizzle_n" -> R.drawable.shower_rain
@@ -27,6 +27,7 @@ object UiUtils {
             "snow_d", "snow_n" -> R.drawable.snow
             "heavy_snow_d", "heavy_snow_n" -> R.drawable.snow
             "thunderstorm_d", "thunderstorm_n" -> R.drawable.thunderstorm
+            "hail_d", "hail_n" -> R.drawable.thunderstorm
             else -> R.drawable.few_clouds_day
         }
     }
@@ -65,6 +66,19 @@ object UiUtils {
             "heavy_snow_n" -> R.drawable.gradient_background_heavy_snow_night
             "thunderstorm_d" -> R.drawable.gradient_background_thunderstorm
             "thunderstorm_n" -> R.drawable.gradient_background_thunderstorm_night
+            "clear_dawn" -> R.drawable.gradient_background_clear_dawn
+            "clear_morning" -> R.drawable.gradient_background_clear_morning
+            "clear_afternoon" -> R.drawable.gradient_background_clear_afternoon
+            "clear_sunset" -> R.drawable.gradient_background_clear_sunset
+            "clear_evening" -> R.drawable.gradient_background_clear_evening
+            "mainly_clear_morning" -> R.drawable.gradient_background_mainly_clear_morning
+            "mainly_clear_sunset" -> R.drawable.gradient_background_mainly_clear_sunset
+            "partly_cloudy_morning" -> R.drawable.gradient_background_partly_cloudy_morning
+            "partly_cloudy_sunset" -> R.drawable.gradient_background_partly_cloudy_sunset
+            "overcast_morning" -> R.drawable.gradient_background_overcast_morning
+            "overcast_sunset" -> R.drawable.gradient_background_overcast_sunset
+            "hail_d" -> R.drawable.gradient_background_hail_day
+            "hail_n" -> R.drawable.gradient_background_hail_night
             else -> R.drawable.gradient_background_clear_day
         }
     }
@@ -103,6 +117,16 @@ object UiUtils {
             "heavy_snow_n" -> R.drawable.gradient_city_shortcut_heavy_snow_night
             "thunderstorm_d" -> R.drawable.gradient_city_shortcut_thunderstorm
             "thunderstorm_n" -> R.drawable.gradient_city_shortcut_thunderstorm_night
+            "clear_dawn", "clear_evening" -> R.drawable.gradient_city_shortcut_clear_night
+            "clear_morning", "clear_afternoon", "clear_sunset" -> R.drawable.gradient_city_shortcut_clear_day
+            "mainly_clear_morning" -> R.drawable.gradient_city_shortcut_mainly_clear_day
+            "mainly_clear_sunset" -> R.drawable.gradient_city_shortcut_mainly_clear_night
+            "partly_cloudy_morning" -> R.drawable.gradient_city_shortcut_few_clouds_day
+            "partly_cloudy_sunset" -> R.drawable.gradient_city_shortcut_few_clouds_night
+            "overcast_morning" -> R.drawable.gradient_city_shortcut_overcast_day
+            "overcast_sunset" -> R.drawable.gradient_city_shortcut_overcast_night
+            "hail_d" -> R.drawable.gradient_city_shortcut_thunderstorm
+            "hail_n" -> R.drawable.gradient_city_shortcut_thunderstorm_night
             else -> R.drawable.gradient_city_shortcut_clear_day
         }
     }
@@ -141,6 +165,19 @@ object UiUtils {
             "heavy_snow_n" -> R.color.heavy_snow_night_status_bar
             "thunderstorm_d" -> R.color.thunderstorm_status_bar
             "thunderstorm_n" -> R.color.thunderstorm_night_status_bar
+            "clear_dawn" -> R.color.clear_dawn_status_bar
+            "clear_morning" -> R.color.clear_morning_status_bar
+            "clear_afternoon" -> R.color.clear_afternoon_status_bar
+            "clear_sunset" -> R.color.clear_sunset_status_bar
+            "clear_evening" -> R.color.clear_evening_status_bar
+            "mainly_clear_morning" -> R.color.mainly_clear_morning_status_bar
+            "mainly_clear_sunset" -> R.color.mainly_clear_sunset_status_bar
+            "partly_cloudy_morning" -> R.color.partly_cloudy_morning_status_bar
+            "partly_cloudy_sunset" -> R.color.partly_cloudy_sunset_status_bar
+            "overcast_morning" -> R.color.overcast_morning_status_bar
+            "overcast_sunset" -> R.color.overcast_sunset_status_bar
+            "hail_d" -> R.color.hail_day_status_bar
+            "hail_n" -> R.color.hail_night_status_bar
             else -> R.color.clear_day_status_bar
         }
     }
@@ -179,6 +216,19 @@ object UiUtils {
             "heavy_snow_n" -> R.color.heavy_snow_night_header
             "thunderstorm_d" -> R.color.thunderstorm_header
             "thunderstorm_n" -> R.color.thunderstorm_night_header
+            "clear_dawn" -> R.color.clear_dawn_header
+            "clear_morning" -> R.color.clear_morning_header
+            "clear_afternoon" -> R.color.clear_afternoon_header
+            "clear_sunset" -> R.color.clear_sunset_header
+            "clear_evening" -> R.color.clear_evening_header
+            "mainly_clear_morning" -> R.color.mainly_clear_morning_header
+            "mainly_clear_sunset" -> R.color.mainly_clear_sunset_header
+            "partly_cloudy_morning" -> R.color.partly_cloudy_morning_header
+            "partly_cloudy_sunset" -> R.color.partly_cloudy_sunset_header
+            "overcast_morning" -> R.color.overcast_morning_header
+            "overcast_sunset" -> R.color.overcast_sunset_header
+            "hail_d" -> R.color.hail_day_header
+            "hail_n" -> R.color.hail_night_header
             else -> R.color.clear_day_header
         }
     }
@@ -217,6 +267,19 @@ object UiUtils {
             "heavy_snow_n" -> R.drawable.rounded_card_heavy_snow_night
             "thunderstorm_d" -> R.drawable.rounded_card_thunderstorm
             "thunderstorm_n" -> R.drawable.rounded_card_thunderstorm_night
+            "clear_dawn" -> R.drawable.rounded_card_clear_dawn
+            "clear_morning" -> R.drawable.rounded_card_clear_morning
+            "clear_afternoon" -> R.drawable.rounded_card_clear_afternoon
+            "clear_sunset" -> R.drawable.rounded_card_clear_sunset
+            "clear_evening" -> R.drawable.rounded_card_clear_evening
+            "mainly_clear_morning" -> R.drawable.rounded_card_mainly_clear_morning
+            "mainly_clear_sunset" -> R.drawable.rounded_card_mainly_clear_sunset
+            "partly_cloudy_morning" -> R.drawable.rounded_card_partly_cloudy_morning
+            "partly_cloudy_sunset" -> R.drawable.rounded_card_partly_cloudy_sunset
+            "overcast_morning" -> R.drawable.rounded_card_overcast_morning
+            "overcast_sunset" -> R.drawable.rounded_card_overcast_sunset
+            "hail_d" -> R.drawable.rounded_card_hail_day
+            "hail_n" -> R.drawable.rounded_card_hail_night
             else -> R.drawable.rounded_card_clear_day
         }
     }

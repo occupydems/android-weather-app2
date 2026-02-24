@@ -20,8 +20,51 @@ object WeatherCodeMapper {
             71, 85 -> "light_snow_$suffix"
             73, 77 -> "snow_$suffix"
             75, 86 -> "heavy_snow_$suffix"
-            95, 96, 99 -> "thunderstorm_$suffix"
+            99 -> "hail_$suffix"
+            95, 96 -> "thunderstorm_$suffix"
             else -> "partly_cloudy_$suffix"
+        }
+    }
+
+    fun getIconCode(wmoCode: Int, isDay: Boolean, hourOfDay: Int): String {
+        return when (wmoCode) {
+            0 -> {
+                when (hourOfDay) {
+                    in 5..6 -> "clear_dawn"
+                    in 7..9 -> "clear_morning"
+                    in 10..13 -> "clear_d"
+                    in 14..16 -> "clear_afternoon"
+                    in 17..18 -> "clear_sunset"
+                    in 19..20 -> "clear_evening"
+                    else -> "clear_n"
+                }
+            }
+            1 -> {
+                when (hourOfDay) {
+                    in 5..9 -> "mainly_clear_morning"
+                    in 10..16 -> "mainly_clear_d"
+                    in 17..18 -> "mainly_clear_sunset"
+                    else -> "mainly_clear_n"
+                }
+            }
+            2 -> {
+                when (hourOfDay) {
+                    in 5..9 -> "partly_cloudy_morning"
+                    in 10..16 -> "partly_cloudy_d"
+                    in 17..18 -> "partly_cloudy_sunset"
+                    else -> "partly_cloudy_n"
+                }
+            }
+            3 -> {
+                when (hourOfDay) {
+                    in 5..9 -> "overcast_morning"
+                    in 10..16 -> "overcast_d"
+                    in 17..18 -> "overcast_sunset"
+                    else -> "overcast_n"
+                }
+            }
+            99 -> if (isDay) "hail_d" else "hail_n"
+            else -> getIconCode(wmoCode, isDay)
         }
     }
 

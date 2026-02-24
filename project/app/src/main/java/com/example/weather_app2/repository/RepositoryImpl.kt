@@ -81,7 +81,11 @@ class RepositoryImpl(
         val current = forecast.current!!
         val isDay = (current.is_day ?: 1) == 1
         val wmoCode = current.weather_code
-        val iconCode = WeatherCodeMapper.getIconCode(wmoCode, isDay)
+        val hourOfDay = try {
+            val timeParts = current.time.split("T")
+            if (timeParts.size > 1) timeParts[1].split(":")[0].toInt() else 12
+        } catch (_: Exception) { 12 }
+        val iconCode = WeatherCodeMapper.getIconCode(wmoCode, isDay, hourOfDay)
         val description = WeatherCodeMapper.getDescription(wmoCode)
         val mainDesc = WeatherCodeMapper.getMainDescription(wmoCode)
 

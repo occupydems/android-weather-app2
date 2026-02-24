@@ -98,4 +98,32 @@
     <color name="light_snow_night_header">#708090</color>
     <color name="heavy_snow_day_header">#AEBFD0</color>
     <color name="heavy_snow_night_header">#90A0AF</color>
+
+    <color name="clear_dawn_status_bar">#5C3D6E</color>
+    <color name="clear_morning_status_bar">#5EA6DA</color>
+    <color name="clear_afternoon_status_bar">#5A9ACF</color>
+    <color name="clear_sunset_status_bar">#6A3D9A</color>
+    <color name="clear_evening_status_bar">#2D3E72</color>
+    <color name="mainly_clear_morning_status_bar">#5699CC</color>
+    <color name="mainly_clear_sunset_status_bar">#506090</color>
+    <color name="partly_cloudy_morning_status_bar">#5583A8</color>
+    <color name="partly_cloudy_sunset_status_bar">#585068</color>
+    <color name="overcast_morning_status_bar">#4D5D6E</color>
+    <color name="overcast_sunset_status_bar">#3D4050</color>
+    <color name="hail_day_status_bar">#1C1C32</color>
+    <color name="hail_night_status_bar">#0A0F30</color>
+
+    <color name="clear_dawn_header">#4D3464</color>
+    <color name="clear_morning_header">#7CBDE5</color>
+    <color name="clear_afternoon_header">#6AACD5</color>
+    <color name="clear_sunset_header">#C75B8C</color>
+    <color name="clear_evening_header">#1B2A5E</color>
+    <color name="mainly_clear_morning_header">#74B3DA</color>
+    <color name="mainly_clear_sunset_header">#8A7298</color>
+    <color name="partly_cloudy_morning_header">#6E9EBA</color>
+    <color name="partly_cloudy_sunset_header">#706078</color>
+    <color name="overcast_morning_header">#5E6E7F</color>
+    <color name="overcast_sunset_header">#4E4D5E</color>
+    <color name="hail_day_header">#2E2E48</color>
+    <color name="hail_night_header">#0E1540</color>
 </resources>

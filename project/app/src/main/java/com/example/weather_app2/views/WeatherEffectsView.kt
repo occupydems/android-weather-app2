@@ -172,11 +172,11 @@ class WeatherEffectsView @JvmOverloads constructor(
         overcastClouds = false
 
         when (iconTag) {
-            "clear_d" -> { }
-            "clear_n" -> {
+            "clear_d", "clear_morning", "clear_afternoon", "clear_sunset" -> { }
+            "clear_n", "clear_dawn", "clear_evening" -> {
                 showStars = true
             }
-            "mainly_clear_d" -> {
+            "mainly_clear_d", "mainly_clear_morning", "mainly_clear_sunset" -> {
                 showClouds = true
                 cloudCount = 2
             }
@@ -185,7 +185,7 @@ class WeatherEffectsView @JvmOverloads constructor(
                 cloudCount = 2
                 showStars = true
             }
-            "partly_cloudy_d" -> {
+            "partly_cloudy_d", "partly_cloudy_morning", "partly_cloudy_sunset" -> {
                 showClouds = true
                 cloudCount = 4
             }
@@ -194,7 +194,7 @@ class WeatherEffectsView @JvmOverloads constructor(
                 cloudCount = 4
                 showStars = true
             }
-            "overcast_d" -> {
+            "overcast_d", "overcast_morning", "overcast_sunset" -> {
                 showClouds = true
                 cloudCount = 10
                 overcastClouds = true
@@ -271,7 +271,7 @@ class WeatherEffectsView @JvmOverloads constructor(
                 cloudCount = 7
                 snowCount = 200
             }
-            "thunderstorm_d", "thunderstorm_n" -> {
+            "thunderstorm_d", "thunderstorm_n", "hail_d", "hail_n" -> {
                 showRain = true
                 showClouds = true
                 showLightning = true

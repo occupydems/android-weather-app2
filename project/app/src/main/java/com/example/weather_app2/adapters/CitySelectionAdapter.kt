@@ -128,9 +128,7 @@ class CitySelectionAdapter(
     }
 
     private fun applyGradientBackground(binding: ItemCityShortcutBinding, icon: String) {
-        val isNight = icon.endsWith("_n")
-        val wmoCode = iconToWmoCode(icon)
-        val colors = CityCardGradients.getCardGradient(wmoCode, isNight)
+        val colors = CityCardGradients.getCardGradient(icon)
         val positions = floatArrayOf(0f, 0.5f, 1f)
 
         val drawable = PaintDrawable().apply {
