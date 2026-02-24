@@ -763,8 +763,8 @@ class WeatherEffectsView @JvmOverloads constructor(
 
         val cx = w * 0.12f
         val cy = h * 0.08f
-        val baseSize = 540f * density
-        val raysSize = baseSize * 2.8f
+        val baseSize = 180f * density
+        val raysSize = 540f * density * 2.8f
 
         bitmapPaint.alpha = 255
 
