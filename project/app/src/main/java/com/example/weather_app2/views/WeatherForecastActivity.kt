@@ -16,7 +16,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -61,25 +60,8 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         savedInstanceState: Bundle?
     ) {
         super.onCreate(savedInstanceState)
-        androidx.core.view.WindowCompat.setDecorFitsSystemWindows(window, false)
-        window.statusBarColor = android.graphics.Color.TRANSPARENT
-        window.navigationBarColor = android.graphics.Color.TRANSPARENT
         binding = ActivityWeatherForecastBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val navBarHeight = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.navigationBars()).bottom
-            binding.btnCitySelection.updateLayoutParams<android.view.ViewGroup.MarginLayoutParams> {
-                bottomMargin = navBarHeight + 8
-            }
-            binding.tvApiCallTime.updateLayoutParams<android.view.ViewGroup.MarginLayoutParams> {
-                bottomMargin = navBarHeight
-            }
-            binding.divider.updateLayoutParams<android.view.ViewGroup.MarginLayoutParams> {
-                bottomMargin = navBarHeight + 4
-            }
-            insets
-        }
 
         setUpRecyclerViews()
         setUpClickListeners()
@@ -374,10 +356,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         currentWeatherTag = weatherTag
         val headerColorInt = UiUtils.getHeaderColor(weatherTag)
         val cardBg = UiUtils.getCardBackground(weatherTag)
-        window.statusBarColor = ContextCompat.getColor(
-            this,
-            UiUtils.getStatusBarColor(weatherTag)
-        )
+        window.statusBarColor = android.graphics.Color.TRANSPARENT
         binding.apply {
             motionContainer.setBackgroundResource(
                 UiUtils.getWeatherForecastBackground(
