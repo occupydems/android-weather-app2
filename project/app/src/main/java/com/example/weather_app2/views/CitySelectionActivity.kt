@@ -86,7 +86,6 @@ class CitySelectionActivity : AppCompatActivity() {
                     viewModel.updateMainWeatherForecastLocation("${DummyWeatherData.DUMMY_PREFIX}${item.icon}", 0.0, 0.0)
                 } else if (item.id == 1000) {
                     prefs.edit().putBoolean("is_my_location", true).apply()
-                    viewModel.updateMainWeatherForecastLocation(item.cityName, item.latitude, item.longitude)
                 } else {
                     prefs.edit().putBoolean("is_my_location", false).apply()
                     viewModel.updateMainWeatherForecastLocation(item.cityName, item.latitude, item.longitude)

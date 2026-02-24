@@ -112,8 +112,10 @@
     <ConstraintSet android:id="@+id/start">
         <Constraint
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:id="@+id/tvCity"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent"
@@ -218,9 +220,11 @@
 
     <ConstraintSet android:id="@+id/swipeDataEnd">
         <Constraint
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/tvCity"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent"
@@ -322,9 +326,10 @@
             android:layout_height="wrap_content"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:id="@+id/tvCity"
-            motion:layout_constraintHorizontal_bias="0.498"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             motion:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="70dp" />
         <Constraint
