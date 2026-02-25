@@ -612,24 +612,6 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
             }
 
             val detailItem = detailItems[i]
-            cardView.setOnClickListener {
-                val targetActivity = when (detailItem.type) {
-                    DetailCardType.UV_INDEX -> UVIndexDetailActivity::class.java
-                    DetailCardType.SUNRISE_SUNSET -> SunriseSunsetDetailActivity::class.java
-                    DetailCardType.WIND -> WindDetailActivity::class.java
-                    DetailCardType.HUMIDITY -> HumidityDetailActivity::class.java
-                    DetailCardType.PRESSURE -> PressureDetailActivity::class.java
-                    DetailCardType.VISIBILITY -> VisibilityDetailActivity::class.java
-                    DetailCardType.FEELS_LIKE -> FeelsLikeDetailActivity::class.java
-                    DetailCardType.PRECIPITATION -> PrecipitationDetailActivity::class.java
-                    else -> DetailBaseActivity::class.java
-                }
-                val intent = Intent(this, targetActivity).apply {
-                    putExtra(DetailBaseActivity.EXTRA_CARD_TYPE, detailItem.header)
-                    putExtra(DetailBaseActivity.EXTRA_WEATHER_DATA, detailItem)
-                }
-                startActivity(intent)
-            }
 
             val params = GridLayout.LayoutParams()
             params.rowSpec = GridLayout.spec(i / 2)
