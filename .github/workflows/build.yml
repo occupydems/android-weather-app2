@@ -43,10 +43,10 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x project/gradlew
 
-    - name: Build Debug APK
+    - name: Build Both APKs
       run: |
         cd project
-        ./gradlew assembleDebug \
+        ./gradlew assembleDemoDebug assembleOfficialDebug \
           --build-cache \
           --parallel \
           -Pandroid.injected.signing.store.file=$(pwd)/debug.keystore \
@@ -54,10 +54,17 @@ jobs:
           -Pandroid.injected.signing.key.alias=androiddebugkey \
           -Pandroid.injected.signing.key.password=android
 
+    - name: Rename APKs
+      run: |
+        DATE=$(date +'%Y%m%d-%H%M%S')
+        cp project/app/build/outputs/apk/demo/debug/app-demo-debug.apk "android-weather-app2-demo-${DATE}.apk"
+        cp project/app/build/outputs/apk/official/debug/app-official-debug.apk "android-weather-app2-${DATE}.apk"
+        echo "date=${DATE}" >> $GITHUB_ENV
+
     - name: Get version info
       id: version
       run: |
-        echo "date=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
+        echo "date=${{ env.date }}" >> $GITHUB_OUTPUT
         echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
     - name: Create Release
@@ -67,7 +74,12 @@ jobs:
         name: Build ${{ steps.version.outputs.date }}
         body: |
           Automated build from commit ${{ steps.version.outputs.short_sha }}
-        files: project/app/build/outputs/apk/debug/app-debug.apk
+
+          **android-weather-app2-${{ steps.version.outputs.date }}.apk** — Official build (no dummy cards)
+          **android-weather-app2-demo-${{ steps.version.outputs.date }}.apk** — Debug build (with dummy weather cards for testing)
+        files: |
+          android-weather-app2-${{ steps.version.outputs.date }}.apk
+          android-weather-app2-demo-${{ steps.version.outputs.date }}.apk
         draft: false
         prerelease: false
       env:

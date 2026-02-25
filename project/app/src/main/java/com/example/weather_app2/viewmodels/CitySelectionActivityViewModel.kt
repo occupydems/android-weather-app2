@@ -86,7 +86,9 @@ class CitySelectionActivityViewModel @Inject constructor(
                 }
                 val initialList = cachedCities.filter { it.id !in deletedCityIds }.toMutableList()
 
-                initialList.addAll(DummyWeatherData.getDummyCityShortcuts())
+                if (com.example.weather_app2.BuildConfig.ENABLE_DUMMY_CARDS) {
+                    initialList.addAll(DummyWeatherData.getDummyCityShortcuts())
+                }
 
                 val deviceLocation = repository.deviceLocation.value
                 if (deviceLocation != null) {
@@ -229,7 +231,9 @@ class CitySelectionActivityViewModel @Inject constructor(
                 }
             }
 
-            finalList.addAll(DummyWeatherData.getDummyCityShortcuts())
+            if (com.example.weather_app2.BuildConfig.ENABLE_DUMMY_CARDS) {
+                finalList.addAll(DummyWeatherData.getDummyCityShortcuts())
+            }
 
             if (deviceResult != null) {
                 finalList.add(deviceResult)

@@ -25,6 +25,21 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
+    }
+
+    flavorDimensions "version"
+    productFlavors {
+        demo {
+            dimension "version"
+            applicationIdSuffix ".demo"
+            versionNameSuffix "-demo"
+            buildConfigField "boolean", "ENABLE_DUMMY_CARDS", "true"
+        }
+        official {
+            dimension "version"
+            buildConfigField "boolean", "ENABLE_DUMMY_CARDS", "false"
+        }
     }
 
     buildTypes {
