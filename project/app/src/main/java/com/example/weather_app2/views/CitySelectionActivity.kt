@@ -52,6 +52,10 @@ class CitySelectionActivity : AppCompatActivity() {
         recyclerViewsSetup()
         setupAnimatedSearchBar()
 
+        binding.btnSettings.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
         val citySelectionListObserver = Observer<MutableList<CityShortcut>> {
             updateStatusBarColor()
             updateRecyclerView()

@@ -1,12 +1,16 @@
 package com.example.weather_app2.views
 
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
 import android.location.Geocoder
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.GridLayout
 import android.widget.ImageView
@@ -371,6 +375,41 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         )
     }
 
+    private var currentBgResId: Int = 0
+
+    private fun crossfadeBackground(newResId: Int) {
+        if (newResId == currentBgResId) {
+            binding.motionContainer.setBackgroundResource(newResId)
+            return
+        }
+        val oldDrawable = binding.motionContainer.background?.mutate()?.constantState?.newDrawable()?.mutate()
+        currentBgResId = newResId
+        if (oldDrawable == null) {
+            binding.motionContainer.setBackgroundResource(newResId)
+            return
+        }
+        val newDrawable = ContextCompat.getDrawable(this, newResId)?.mutate() ?: return
+        newDrawable.alpha = 0
+        val layer = LayerDrawable(arrayOf(oldDrawable, newDrawable))
+        binding.motionContainer.background = layer
+        ValueAnimator.ofInt(0, 255).apply {
+            duration = 250
+            interpolator = DecelerateInterpolator()
+            addUpdateListener { anim ->
+                val v = anim.animatedValue as Int
+                newDrawable.alpha = v
+                oldDrawable.alpha = 255 - v
+                layer.invalidateSelf()
+            }
+            addListener(object : android.animation.AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: android.animation.Animator) {
+                    binding.motionContainer.setBackgroundResource(newResId)
+                }
+            })
+            start()
+        }
+    }
+
     private fun updateBackground(){
         val data = viewModel.currentWeatherData.value ?: return
         val weatherTag = data.weather.firstOrNull()?.icon ?: return
@@ -379,11 +418,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         val cardBg = UiUtils.getCardBackground(weatherTag)
         window.statusBarColor = android.graphics.Color.TRANSPARENT
         binding.apply {
-            motionContainer.setBackgroundResource(
-                UiUtils.getWeatherForecastBackground(
-                    weatherTag
-                )
-            )
+            crossfadeBackground(UiUtils.getWeatherForecastBackground(weatherTag))
             divider.setBackgroundResource(headerColorInt)
             hourlyForecastContainer.setBackgroundResource(cardBg)
             dailyForecastCard.setBackgroundResource(cardBg)

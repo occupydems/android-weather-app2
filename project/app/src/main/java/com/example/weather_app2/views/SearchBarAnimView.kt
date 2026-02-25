@@ -2,7 +2,6 @@ package com.example.weather_app2.views
 
 import android.animation.ValueAnimator
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.text.Editable
@@ -33,7 +32,6 @@ class SearchBarAnimView @JvmOverloads constructor(
     private val cancelButton: TextView
     private val searchIcon: ImageView
     private val searchHintText: TextView
-    private val settingsIcon: ImageView
 
     var isExpanded = false
         private set
@@ -74,21 +72,8 @@ class SearchBarAnimView @JvmOverloads constructor(
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
         }
 
-        settingsIcon = ImageView(context).apply {
-            setImageResource(android.R.drawable.ic_menu_manage)
-            setColorFilter(Color.parseColor("#8E8E93"))
-            val iconSize = dpToPx(24f).toInt()
-            layoutParams = LinearLayout.LayoutParams(iconSize, iconSize).apply {
-                marginStart = dpToPx(8f).toInt()
-            }
-            setOnClickListener {
-                context.startActivity(Intent(context, SettingsActivity::class.java))
-            }
-        }
-
         collapsedContainer.addView(searchIcon)
         collapsedContainer.addView(searchHintText)
-        collapsedContainer.addView(settingsIcon)
 
         expandedContainer = LinearLayout(context).apply {
             orientation = LinearLayout.HORIZONTAL
