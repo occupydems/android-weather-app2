@@ -76,7 +76,7 @@ class SearchBarAnimView @JvmOverloads constructor(
 
         settingsIcon = ImageView(context).apply {
             setImageResource(android.R.drawable.ic_menu_manage)
-            setColorFilter(Color.WHITE)
+            setColorFilter(Color.parseColor("#8E8E93"))
             val iconSize = dpToPx(24f).toInt()
             layoutParams = LinearLayout.LayoutParams(iconSize, iconSize).apply {
                 marginStart = dpToPx(8f).toInt()
