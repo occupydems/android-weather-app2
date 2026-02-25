@@ -387,6 +387,7 @@ class WeatherEffectsView @JvmOverloads constructor(
         fogLayers.clear()
 
         if (showStars) {
+            val starDriftSpeed = -2.5f * density
             val topCount = (65 * scale).toInt()
             for (i in 0 until topCount) {
                 stars.add(StarParticle(
@@ -396,7 +397,7 @@ class WeatherEffectsView @JvmOverloads constructor(
                     brightness = Random.nextFloat(),
                     twinkleDuration = 2000L + (Random.nextFloat() * 3000L).toLong(),
                     twinklePhase = Random.nextFloat(),
-                    driftSpeed = -(3f + Random.nextFloat() * 5f) * density,
+                    driftSpeed = starDriftSpeed,
                     fadeCooldown = 3f + Random.nextFloat() * 8f
                 ))
             }
@@ -409,7 +410,7 @@ class WeatherEffectsView @JvmOverloads constructor(
                     brightness = Random.nextFloat(),
                     twinkleDuration = 2000L + (Random.nextFloat() * 3000L).toLong(),
                     twinklePhase = Random.nextFloat(),
-                    driftSpeed = -(3f + Random.nextFloat() * 5f) * density,
+                    driftSpeed = starDriftSpeed,
                     fadeCooldown = 3f + Random.nextFloat() * 8f
                 ))
             }
