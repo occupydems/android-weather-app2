@@ -393,12 +393,12 @@ class WeatherEffectsView @JvmOverloads constructor(
                 stars.add(StarParticle(
                     x = Random.nextFloat() * w,
                     y = Random.nextFloat() * h * 0.5f,
-                    size = (2f + Random.nextFloat() * 4f) * density,
+                    size = (1.5f + Random.nextFloat() * 3f) * density,
                     brightness = Random.nextFloat(),
                     twinkleDuration = 2000L + (Random.nextFloat() * 3000L).toLong(),
                     twinklePhase = Random.nextFloat(),
                     driftSpeed = starDriftSpeed,
-                    fadeCooldown = 3f + Random.nextFloat() * 8f
+                    fadeCooldown = 1f + Random.nextFloat() * 4f
                 ))
             }
             val bottomCount = (12 * scale).toInt()
@@ -406,12 +406,12 @@ class WeatherEffectsView @JvmOverloads constructor(
                 stars.add(StarParticle(
                     x = Random.nextFloat() * w,
                     y = h * 0.5f + Random.nextFloat() * h * 0.35f,
-                    size = (4f + Random.nextFloat() * 5f) * density,
+                    size = (3f + Random.nextFloat() * 3.75f) * density,
                     brightness = Random.nextFloat(),
                     twinkleDuration = 2000L + (Random.nextFloat() * 3000L).toLong(),
                     twinklePhase = Random.nextFloat(),
                     driftSpeed = starDriftSpeed,
-                    fadeCooldown = 3f + Random.nextFloat() * 8f
+                    fadeCooldown = 1f + Random.nextFloat() * 4f
                 ))
             }
         }
@@ -620,22 +620,22 @@ class WeatherEffectsView @JvmOverloads constructor(
                     if (star.fadeAlpha <= star.fadeTarget) {
                         star.fadeAlpha = star.fadeTarget
                         star.fadeTarget = 1f
-                        star.fadeSpeed = 0.3f + Random.nextFloat() * 0.4f
+                        star.fadeSpeed = 0.08f + Random.nextFloat() * 0.1f
                     }
                 } else {
                     star.fadeAlpha += star.fadeSpeed * delta
                     if (star.fadeAlpha >= 1f) {
                         star.fadeAlpha = 1f
                         star.isFading = false
-                        star.fadeCooldown = 3f + Random.nextFloat() * 10f
+                        star.fadeCooldown = 1f + Random.nextFloat() * 5f
                     }
                 }
             } else {
                 star.fadeCooldown -= delta
-                if (star.fadeCooldown <= 0f && Random.nextFloat() < 0.02f) {
+                if (star.fadeCooldown <= 0f && Random.nextFloat() < 0.06f) {
                     star.isFading = true
                     star.fadeTarget = 0.1f + Random.nextFloat() * 0.2f
-                    star.fadeSpeed = 0.3f + Random.nextFloat() * 0.5f
+                    star.fadeSpeed = 0.08f + Random.nextFloat() * 0.12f
                 }
             }
 
