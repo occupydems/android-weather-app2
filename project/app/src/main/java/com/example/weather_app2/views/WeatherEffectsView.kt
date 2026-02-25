@@ -388,31 +388,25 @@ class WeatherEffectsView @JvmOverloads constructor(
 
         if (showStars) {
             val starDriftSpeed = -2.5f * density
-            val topCount = (65 * scale).toInt()
-            for (i in 0 until topCount) {
-                stars.add(StarParticle(
-                    x = Random.nextFloat() * w,
-                    y = Random.nextFloat() * h * 0.5f,
-                    size = (1.5f + Random.nextFloat() * 3f) * density,
-                    brightness = Random.nextFloat(),
-                    twinkleDuration = 2000L + (Random.nextFloat() * 3000L).toLong(),
-                    twinklePhase = Random.nextFloat(),
-                    driftSpeed = starDriftSpeed,
-                    fadeCooldown = 1f + Random.nextFloat() * 4f
-                ))
-            }
-            val bottomCount = (12 * scale).toInt()
-            for (i in 0 until bottomCount) {
-                stars.add(StarParticle(
-                    x = Random.nextFloat() * w,
-                    y = h * 0.5f + Random.nextFloat() * h * 0.35f,
-                    size = (3f + Random.nextFloat() * 3.75f) * density,
-                    brightness = Random.nextFloat(),
-                    twinkleDuration = 2000L + (Random.nextFloat() * 3000L).toLong(),
-                    twinklePhase = Random.nextFloat(),
-                    driftSpeed = starDriftSpeed,
-                    fadeCooldown = 1f + Random.nextFloat() * 4f
-                ))
+            val starSizes = floatArrayOf(1.5f, 2.5f, 3.75f, 5.25f, 6.75f)
+            val baseCounts = intArrayOf(25, 20, 15, 10, 7)
+            for (tier in starSizes.indices) {
+                val baseCount = (baseCounts[tier] * scale).toInt()
+                val count = baseCount + Random.nextInt((baseCount * 0.4f).toInt().coerceAtLeast(1) + 1)
+                val baseSize = starSizes[tier]
+                val sizeVariation = baseSize * 0.15f
+                for (i in 0 until count) {
+                    stars.add(StarParticle(
+                        x = Random.nextFloat() * w,
+                        y = Random.nextFloat() * h * 0.85f,
+                        size = (baseSize - sizeVariation + Random.nextFloat() * sizeVariation * 2f) * density,
+                        brightness = Random.nextFloat(),
+                        twinkleDuration = 2000L + (Random.nextFloat() * 3000L).toLong(),
+                        twinklePhase = Random.nextFloat(),
+                        driftSpeed = starDriftSpeed,
+                        fadeCooldown = 1f + Random.nextFloat() * 4f
+                    ))
+                }
             }
         }
 
