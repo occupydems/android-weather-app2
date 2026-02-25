@@ -388,7 +388,7 @@ class WeatherEffectsView @JvmOverloads constructor(
 
         if (showStars) {
             val starDriftSpeed = -2.5f * density
-            val starSizes = floatArrayOf(1.5f, 2.5f, 3.75f, 5.25f, 6.75f)
+            val starSizes = floatArrayOf(1.125f, 2.5f, 3.75f, 5.25f, 5.06f)
             val baseCounts = intArrayOf(25, 20, 15, 10, 7)
             for (tier in starSizes.indices) {
                 val baseCount = (baseCounts[tier] * scale).toInt()
@@ -641,12 +641,12 @@ class WeatherEffectsView @JvmOverloads constructor(
                     if (star.fadeAlpha >= 1f) {
                         star.fadeAlpha = 1f
                         star.isFading = false
-                        star.fadeCooldown = 2f + Random.nextFloat() * 6f
+                        star.fadeCooldown = 1f + Random.nextFloat() * 5f
                     }
                 }
             } else {
                 star.fadeCooldown -= delta
-                if (star.fadeCooldown <= 0f && Random.nextFloat() < 0.04f) {
+                if (star.fadeCooldown <= 0f && Random.nextFloat() < 0.06f) {
                     if (currentlyFading < maxFading && canStartFading(star)) {
                         star.isFading = true
                         star.fadeTarget = 0.1f + Random.nextFloat() * 0.2f
