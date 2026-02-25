@@ -6,28 +6,41 @@ object UiUtils {
 
     fun getWeatherIcon(iconTag: String): Int {
         return when(iconTag) {
-            "clear_d", "clear_morning", "clear_afternoon", "clear_sunset" -> R.drawable.ic_sun_custom_big_foreground
-            "clear_n", "clear_dawn", "clear_evening" -> R.drawable.ic_moon_custom_big_foreground
-            "mainly_clear_d", "mainly_clear_morning" -> R.drawable.ic_sun_custom_big_foreground
-            "mainly_clear_n", "mainly_clear_sunset" -> R.drawable.ic_moon_custom_big_foreground
+            "clear_d", "clear_morning", "clear_afternoon" -> R.drawable.ic_weather_sunny
+            "clear_dawn" -> R.drawable.ic_weather_sunrise
+            "clear_sunset" -> R.drawable.ic_weather_sunset
+            "clear_n", "clear_evening" -> R.drawable.ic_weather_clear_night
+            "mainly_clear_d", "mainly_clear_morning" -> R.drawable.ic_weather_sunny
+            "mainly_clear_dawn" -> R.drawable.ic_weather_sunrise
+            "mainly_clear_sunset" -> R.drawable.ic_weather_sunset
+            "mainly_clear_n" -> R.drawable.ic_weather_clear_night
             "partly_cloudy_d", "partly_cloudy_morning" -> R.drawable.few_clouds_day
-            "partly_cloudy_n", "partly_cloudy_sunset" -> R.drawable.few_clouds_night
-            "overcast_d", "overcast_n", "overcast_morning", "overcast_sunset" -> R.drawable.broken_clouds
+            "partly_cloudy_dawn" -> R.drawable.ic_weather_sunrise
+            "partly_cloudy_sunset" -> R.drawable.ic_weather_sunset
+            "partly_cloudy_n" -> R.drawable.ic_weather_cloudy_night
+            "overcast_d", "overcast_morning", "overcast_sunset", "overcast_dawn" -> R.drawable.broken_clouds
+            "overcast_n" -> R.drawable.ic_weather_cloudy_night
             "fog_d", "fog_n" -> R.drawable.mist
-            "light_drizzle_d", "light_drizzle_n" -> R.drawable.shower_rain
-            "drizzle_d", "drizzle_n" -> R.drawable.shower_rain
-            "freezing_drizzle_d", "freezing_drizzle_n" -> R.drawable.shower_rain
-            "light_rain_d", "light_rain_n" -> R.drawable.shower_rain
+            "light_drizzle_d" -> R.drawable.shower_rain
+            "light_drizzle_n" -> R.drawable.ic_weather_rain_night
+            "drizzle_d" -> R.drawable.shower_rain
+            "drizzle_n" -> R.drawable.ic_weather_rain_night
+            "freezing_drizzle_d" -> R.drawable.shower_rain
+            "freezing_drizzle_n" -> R.drawable.ic_weather_rain_night
+            "light_rain_d" -> R.drawable.shower_rain
+            "light_rain_n" -> R.drawable.ic_weather_rain_night
             "rain_d" -> R.drawable.rain_day
-            "rain_n" -> R.drawable.rain_night
+            "rain_n" -> R.drawable.ic_weather_rain_night
             "heavy_rain_d" -> R.drawable.rain_day
-            "heavy_rain_n" -> R.drawable.rain_night
-            "sleet_d", "sleet_n" -> R.drawable.snow
-            "light_snow_d", "light_snow_n" -> R.drawable.snow
-            "snow_d", "snow_n" -> R.drawable.snow
-            "heavy_snow_d", "heavy_snow_n" -> R.drawable.snow
-            "thunderstorm_d", "thunderstorm_n" -> R.drawable.thunderstorm
-            "hail_d", "hail_n" -> R.drawable.thunderstorm
+            "heavy_rain_n" -> R.drawable.ic_weather_rain_night
+            "sleet_d", "sleet_n" -> R.drawable.ic_weather_snow
+            "light_snow_d", "light_snow_n" -> R.drawable.ic_weather_snow
+            "snow_d", "snow_n" -> R.drawable.ic_weather_snow
+            "heavy_snow_d", "heavy_snow_n" -> R.drawable.ic_weather_snow
+            "thunderstorm_d" -> R.drawable.thunderstorm
+            "thunderstorm_n" -> R.drawable.ic_weather_storm_night
+            "hail_d" -> R.drawable.thunderstorm
+            "hail_n" -> R.drawable.ic_weather_storm_night
             else -> R.drawable.few_clouds_day
         }
     }
