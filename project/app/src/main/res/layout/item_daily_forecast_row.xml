@@ -24,8 +24,22 @@
         android:layout_height="28dp"
         app:layout_constraintStart_toEndOf="@+id/tvDay"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tvPrecipChance"
+        app:layout_constraintVertical_chainStyle="packed"
         android:layout_marginStart="8dp" />
+
+    <TextView
+        android:id="@+id/tvPrecipChance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#5AC8FA"
+        android:textSize="11sp"
+        android:fontFamily="sans-serif-medium"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/ivDailyWeatherIcon"
+        app:layout_constraintEnd_toEndOf="@+id/ivDailyWeatherIcon"
+        app:layout_constraintTop_toBottomOf="@+id/ivDailyWeatherIcon"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/tvDailyL"

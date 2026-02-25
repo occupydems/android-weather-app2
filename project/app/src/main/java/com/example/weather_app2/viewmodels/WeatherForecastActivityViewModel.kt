@@ -390,7 +390,8 @@ class WeatherForecastActivityViewModel @Inject constructor(
                     dailyData[i].temp.min.toInt(),
                     UiUtils.getWeatherIcon(
                         dailyData[i].weather[0].icon
-                    )
+                    ),
+                    (dailyData[i].pop * 100).toInt()
                 )
             )
         }

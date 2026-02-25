@@ -211,7 +211,7 @@ class RepositoryImpl(
                         moon_phase = 0.0,
                         moonrise = 0,
                         moonset = 0,
-                        pop = 0.0,
+                        pop = (forecast.daily.precipitation_probability_max?.getOrNull(i) ?: 0) / 100.0,
                         pressure = 0,
                         rain = 0.0,
                         sunrise = sunriseUnix,

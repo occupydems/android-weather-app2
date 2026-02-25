@@ -484,6 +484,14 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
             rowView.findViewById<TextView>(R.id.tvDailyL).text = getString(R.string.temp, item.tempL)
             rowView.findViewById<TextView>(R.id.tvDailyH).text = getString(R.string.temp, item.tempH)
 
+            val tvPrecip = rowView.findViewById<TextView>(R.id.tvPrecipChance)
+            if (item.pop > 0) {
+                tvPrecip.text = "${item.pop}%"
+                tvPrecip.visibility = View.VISIBLE
+            } else {
+                tvPrecip.visibility = View.GONE
+            }
+
             val tempBarContainer = rowView.findViewById<FrameLayout>(R.id.tempBarContainer)
             val tempBarFill = rowView.findViewById<View>(R.id.tempBarFill)
 
