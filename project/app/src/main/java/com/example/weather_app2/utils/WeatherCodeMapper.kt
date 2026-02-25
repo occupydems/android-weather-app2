@@ -26,12 +26,8 @@ object WeatherCodeMapper {
         }
     }
 
-    fun getIconCode(wmoCode: Int, isDay: Boolean, hourOfDay: Int): String {
-        return getIconCode(wmoCode, isDay, hourOfDay, 0, 0)
-    }
-
-    fun getIconCode(wmoCode: Int, isDay: Boolean, hourOfDay: Int, sunriseUnix: Int, sunsetUnix: Int): String {
-        val period = getTimePeriod(hourOfDay, isDay, sunriseUnix, sunsetUnix)
+    fun getIconCode(wmoCode: Int, isDay: Boolean, currentUnix: Int, sunriseUnix: Int, sunsetUnix: Int): String {
+        val period = getTimePeriod(currentUnix, sunriseUnix, sunsetUnix)
         return when (wmoCode) {
             0 -> "clear_$period"
             1 -> when (period) {
@@ -60,38 +56,23 @@ object WeatherCodeMapper {
         }
     }
 
-    private fun getTimePeriod(hourOfDay: Int, isDay: Boolean, sunriseUnix: Int, sunsetUnix: Int): String {
-        if (sunriseUnix > 0 && sunsetUnix > 0) {
-            val cal = java.util.Calendar.getInstance()
-            cal.timeInMillis = sunriseUnix.toLong() * 1000
-            val sunriseHour = cal.get(java.util.Calendar.HOUR_OF_DAY)
-            val sunriseMin = cal.get(java.util.Calendar.MINUTE)
-            cal.timeInMillis = sunsetUnix.toLong() * 1000
-            val sunsetHour = cal.get(java.util.Calendar.HOUR_OF_DAY)
-            val sunsetMin = cal.get(java.util.Calendar.MINUTE)
-            val sunriseMinutes = sunriseHour * 60 + sunriseMin
-            val sunsetMinutes = sunsetHour * 60 + sunsetMin
-            val nowMinutes = hourOfDay * 60 + 30
+    private fun getTimePeriod(currentUnix: Int, sunriseUnix: Int, sunsetUnix: Int): String {
+        if (sunriseUnix > 0 && sunsetUnix > 0 && currentUnix > 0) {
+            val now = currentUnix.toLong()
+            val sunrise = sunriseUnix.toLong()
+            val sunset = sunsetUnix.toLong()
             return when {
-                nowMinutes < sunriseMinutes - 60 -> "n"
-                nowMinutes < sunriseMinutes + 30 -> "dawn"
-                nowMinutes < sunriseMinutes + 150 -> "morning"
-                nowMinutes < sunsetMinutes - 180 -> "d"
-                nowMinutes < sunsetMinutes - 60 -> "afternoon"
-                nowMinutes < sunsetMinutes -> "sunset"
-                nowMinutes < sunsetMinutes + 30 -> "evening"
+                now < sunrise - 3600 -> "n"
+                now < sunrise + 1800 -> "dawn"
+                now < sunrise + 9000 -> "morning"
+                now < sunset - 10800 -> "d"
+                now < sunset - 3600 -> "afternoon"
+                now < sunset -> "sunset"
+                now < sunset + 1800 -> "evening"
                 else -> "n"
             }
         }
-        return when (hourOfDay) {
-            in 5..6 -> "dawn"
-            in 7..9 -> "morning"
-            in 10..13 -> "d"
-            in 14..16 -> "afternoon"
-            in 17..18 -> "sunset"
-            in 19..20 -> "evening"
-            else -> "n"
-        }
+        return "d"
     }
 
     fun getDescription(wmoCode: Int): String {
