@@ -21,7 +21,13 @@ class WeatherEffectsView @JvmOverloads constructor(
     private data class StarParticle(
         var x: Float, var y: Float, var size: Float,
         var brightness: Float, var twinkleDuration: Long, var twinklePhase: Float,
-        var driftSpeed: Float
+        var driftSpeed: Float,
+        var fadeAlpha: Float = 1f,
+        var isFading: Boolean = false,
+        var fadeTarget: Float = 1f,
+        var fadeSpeed: Float = 0f,
+        var fadeTimer: Float = 0f,
+        var fadeCooldown: Float = 0f
     )
 
     private data class RainDrop(
@@ -380,16 +386,30 @@ class WeatherEffectsView @JvmOverloads constructor(
         fogLayers.clear()
 
         if (showStars) {
-            val count = (80 * scale).toInt()
-            for (i in 0 until count) {
+            val topCount = (65 * scale).toInt()
+            for (i in 0 until topCount) {
                 stars.add(StarParticle(
                     x = Random.nextFloat() * w,
-                    y = Random.nextFloat() * h * 0.85f,
+                    y = Random.nextFloat() * h * 0.5f,
                     size = (2f + Random.nextFloat() * 4f) * density,
                     brightness = Random.nextFloat(),
                     twinkleDuration = 2000L + (Random.nextFloat() * 3000L).toLong(),
                     twinklePhase = Random.nextFloat(),
-                    driftSpeed = (Random.nextFloat() * 0.3f - 0.15f) * density
+                    driftSpeed = -(0.15f + Random.nextFloat() * 0.25f) * density,
+                    fadeCooldown = 5f + Random.nextFloat() * 20f
+                ))
+            }
+            val bottomCount = (12 * scale).toInt()
+            for (i in 0 until bottomCount) {
+                stars.add(StarParticle(
+                    x = Random.nextFloat() * w,
+                    y = h * 0.5f + Random.nextFloat() * h * 0.35f,
+                    size = (4f + Random.nextFloat() * 5f) * density,
+                    brightness = Random.nextFloat(),
+                    twinkleDuration = 2000L + (Random.nextFloat() * 3000L).toLong(),
+                    twinklePhase = Random.nextFloat(),
+                    driftSpeed = -(0.15f + Random.nextFloat() * 0.25f) * density,
+                    fadeCooldown = 5f + Random.nextFloat() * 20f
                 ))
             }
         }
@@ -590,15 +610,34 @@ class WeatherEffectsView @JvmOverloads constructor(
     private fun drawStars(canvas: Canvas, w: Float, h: Float, delta: Float, currentTime: Long) {
         for (star in stars) {
             star.x += star.driftSpeed * delta
-            if (star.x > w) star.x -= w
             if (star.x < 0) star.x += w
 
-            val twinkle = (sin(
-                (currentTime.toFloat() / star.twinkleDuration + star.twinklePhase) * 2f * PI.toFloat()
-            ) * 0.5f + 0.5f)
-            val alpha = (0.1f + twinkle * 0.9f)
+            if (star.isFading) {
+                if (star.fadeAlpha > star.fadeTarget) {
+                    star.fadeAlpha -= star.fadeSpeed * delta
+                    if (star.fadeAlpha <= star.fadeTarget) {
+                        star.fadeAlpha = star.fadeTarget
+                        star.fadeTarget = 1f
+                        star.fadeSpeed = 0.05f + Random.nextFloat() * 0.08f
+                    }
+                } else {
+                    star.fadeAlpha += star.fadeSpeed * delta
+                    if (star.fadeAlpha >= 1f) {
+                        star.fadeAlpha = 1f
+                        star.isFading = false
+                        star.fadeCooldown = 8f + Random.nextFloat() * 25f
+                    }
+                }
+            } else {
+                star.fadeCooldown -= delta
+                if (star.fadeCooldown <= 0f && Random.nextFloat() < 0.003f) {
+                    star.isFading = true
+                    star.fadeTarget = 0.15f + Random.nextFloat() * 0.25f
+                    star.fadeSpeed = 0.04f + Random.nextFloat() * 0.06f
+                }
+            }
 
-            starPaint.alpha = (alpha * 255).toInt()
+            starPaint.alpha = (star.fadeAlpha * 255).toInt()
 
             starPath.reset()
             val halfSize = star.size / 2f
