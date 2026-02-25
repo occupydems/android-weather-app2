@@ -68,6 +68,21 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         binding = ActivityWeatherForecastBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val statusBarHeight = run {
+            val resId = resources.getIdentifier("status_bar_height", "dimen", "android")
+            if (resId > 0) resources.getDimensionPixelSize(resId) else 0
+        }
+        binding.weatherEffectsView.statusBarInset = statusBarHeight
+        binding.tvCity.post {
+            val startSet = binding.motionContainer.getConstraintSet(R.id.start)
+            val endSet = binding.motionContainer.getConstraintSet(R.id.swipeDataEnd)
+            val existingMargin = (32 * resources.displayMetrics.density).toInt()
+            startSet.setMargin(R.id.tvCity, androidx.constraintlayout.widget.ConstraintSet.TOP, existingMargin + statusBarHeight)
+            val endMargin = (8 * resources.displayMetrics.density).toInt()
+            endSet.setMargin(R.id.tvCity, androidx.constraintlayout.widget.ConstraintSet.TOP, endMargin + statusBarHeight)
+            binding.motionContainer.updateState()
+        }
+
         setUpRecyclerViews()
         setUpClickListeners()
         initOppoEngine()

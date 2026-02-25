@@ -61,6 +61,7 @@ class WeatherEffectsView @JvmOverloads constructor(
     )
 
     private val density = resources.displayMetrics.density
+    var statusBarInset: Int = 0
 
     private var showStars = false
     private var showRain = false
@@ -809,7 +810,7 @@ class WeatherEffectsView @JvmOverloads constructor(
         if (sunRotation >= 360f) sunRotation -= 360f
 
         val cx = w * 0.12f
-        val cy = h * 0.08f
+        val cy = h * 0.08f + statusBarInset
         val baseSize = 90f * density
         val raysSize = baseSize * 6.4f
 
