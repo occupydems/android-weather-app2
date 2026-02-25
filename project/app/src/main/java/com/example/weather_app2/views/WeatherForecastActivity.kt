@@ -305,7 +305,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
         val city = address?.locality
         if (neighborhood != null) {
             val name = if (city != null && neighborhood != city) "$neighborhood, $city" else neighborhood
-            viewModel.updateDeviceLocationWithCoords(name, lat, lon)
+            viewModel.updateDeviceLocationWithCoordsAndRefresh(name, lat, lon)
         } else {
             lifecycleScope.launch {
                 val name = resolveNeighborhoodFromNominatim(lat, lon)
@@ -315,7 +315,7 @@ class WeatherForecastActivity : AppCompatActivity(), EasyPermissions.PermissionC
                             ?: address?.adminArea
                             ?: String.format("%.2f, %.2f", lat, lon)
                     }
-                viewModel.updateDeviceLocationWithCoords(name, lat, lon)
+                viewModel.updateDeviceLocationWithCoordsAndRefresh(name, lat, lon)
             }
         }
     }

@@ -163,6 +163,24 @@ class WeatherForecastActivityViewModel @Inject constructor(
             .apply()
     }
 
+    fun updateDeviceLocationWithCoordsAndRefresh(
+        displayName: String,
+        lat: Double,
+        lon: Double
+    ) {
+        repository.deviceLocation.value = displayName
+        repository.mainForecastLat = lat
+        repository.mainForecastLon = lon
+        application.getSharedPreferences("weather_prefs", android.content.Context.MODE_PRIVATE)
+            .edit()
+            .putString("last_location", displayName)
+            .putFloat("last_lat", lat.toFloat())
+            .putFloat("last_lon", lon.toFloat())
+            .apply()
+        repository.mainForecastLocation.value = null
+        repository.mainForecastLocation.value = displayName
+    }
+
     suspend fun getGeocodingSuggestions(query: String): List<String> {
         return repository.getGeocodingSuggestions(query)
     }
