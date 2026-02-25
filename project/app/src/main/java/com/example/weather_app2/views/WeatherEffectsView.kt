@@ -388,8 +388,8 @@ class WeatherEffectsView @JvmOverloads constructor(
 
         if (showStars) {
             val starDriftSpeed = -2.5f * density
-            val starSizes = floatArrayOf(1.125f, 2.5f, 3.75f, 5.25f, 5.06f)
-            val baseCounts = intArrayOf(25, 20, 15, 10, 7)
+            val starSizes = floatArrayOf(1.5f, 2.8f, 4.1f, 5.4f, 6.75f)
+            val baseCounts = intArrayOf(25, 18, 14, 10, 7)
             for (tier in starSizes.indices) {
                 val baseCount = (baseCounts[tier] * scale).toInt()
                 val count = baseCount + Random.nextInt((baseCount * 0.4f).toInt().coerceAtLeast(1) + 1)
