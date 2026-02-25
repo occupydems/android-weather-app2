@@ -603,7 +603,27 @@ class WeatherEffectsView @JvmOverloads constructor(
         if (showLightning) drawLightning(canvas, w, h, currentTime)
     }
 
+    private val minFadeDistance = 80f
+
+    private fun canStartFading(candidate: StarParticle): Boolean {
+        val minDist = minFadeDistance * density
+        val minDistSq = minDist * minDist
+        for (other in stars) {
+            if (other === candidate || !other.isFading) continue
+            val dx = candidate.x - other.x
+            val dy = candidate.y - other.y
+            if (dx * dx + dy * dy < minDistSq) return false
+        }
+        return true
+    }
+
     private fun drawStars(canvas: Canvas, w: Float, h: Float, delta: Float, currentTime: Long) {
+        val maxFading = (stars.size * 0.08f).toInt().coerceAtLeast(2)
+        var currentlyFading = 0
+        for (star in stars) {
+            if (star.isFading) currentlyFading++
+        }
+
         for (star in stars) {
             star.x += star.driftSpeed * delta
             if (star.x < 0) star.x += w
@@ -621,15 +641,20 @@ class WeatherEffectsView @JvmOverloads constructor(
                     if (star.fadeAlpha >= 1f) {
                         star.fadeAlpha = 1f
                         star.isFading = false
-                        star.fadeCooldown = 1f + Random.nextFloat() * 5f
+                        star.fadeCooldown = 2f + Random.nextFloat() * 6f
                     }
                 }
             } else {
                 star.fadeCooldown -= delta
-                if (star.fadeCooldown <= 0f && Random.nextFloat() < 0.06f) {
-                    star.isFading = true
-                    star.fadeTarget = 0.1f + Random.nextFloat() * 0.2f
-                    star.fadeSpeed = 0.08f + Random.nextFloat() * 0.12f
+                if (star.fadeCooldown <= 0f && Random.nextFloat() < 0.04f) {
+                    if (currentlyFading < maxFading && canStartFading(star)) {
+                        star.isFading = true
+                        star.fadeTarget = 0.1f + Random.nextFloat() * 0.2f
+                        star.fadeSpeed = 0.08f + Random.nextFloat() * 0.12f
+                        currentlyFading++
+                    } else {
+                        star.fadeCooldown = 1f + Random.nextFloat() * 3f
+                    }
                 }
             }
 
